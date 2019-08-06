@@ -34,7 +34,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="box-header with-border">
-                                            <h3 class="box-title">Serviços</h3>
+                                            <h3 class="box-title">Serviço</h3>
                                             <div class="box-tools pull-right">
                                                 <button type="button" class="btn btn-box-tool new_objeto"><i class="fa fa-plus-circle"></i></button>
                                             </div>
@@ -68,7 +68,7 @@
                                             <div class="" style="">
                                                 <div class="col-md-12">
                                                     <div class="form-group">
-                                                        <label>Etapas</label>
+                                                        <label>Sub-Serviços</label>
                                                         <input type="text" class="form-control" name="etapas[]" id="etapas[]" autocomplete="off">
                                                         <div class="etapa_add"> </div>
                                                     </div>
