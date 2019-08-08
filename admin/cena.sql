@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 05-Ago-2019 às 21:14
+-- Generation Time: 08-Ago-2019 às 23:18
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 7.2.12
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `cena`
 --
-CREATE DATABASE IF NOT EXISTS `cena` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `cena`;
 
 -- --------------------------------------------------------
 
@@ -30,7 +28,6 @@ USE `cena`;
 -- Estrutura da tabela `cliente`
 --
 
-DROP TABLE IF EXISTS `cliente`;
 CREATE TABLE `cliente` (
   `id` int(11) NOT NULL,
   `id_company` int(11) DEFAULT NULL,
@@ -47,7 +44,13 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id`, `id_company`, `cliente_nome`, `cliente_email`, `cliente_rg`, `cliente_cpf`, `clend_id`, `cliente_responsavel`) VALUES
-(40, 1, 'Marcos Varella', 'marcos@marcos', NULL, NULL, NULL, 'josé');
+(40, 1, 'Marcos Varella', 'marcos@marcos', NULL, NULL, NULL, 'josé'),
+(41, 1, 'Gabriel', '', '', '', NULL, NULL),
+(42, 1, 'Gabriel2', '', '', '', NULL, NULL),
+(43, 1, 'Gabriel3', '', '', '', NULL, NULL),
+(44, 1, 'Luana', '', '', '', NULL, NULL),
+(45, 1, 'Nelly', '', '', '', NULL, NULL),
+(46, 1, 'Thiago', '', '', '', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -55,7 +58,6 @@ INSERT INTO `cliente` (`id`, `id_company`, `cliente_nome`, `cliente_email`, `cli
 -- Estrutura da tabela `cliente_endereco`
 --
 
-DROP TABLE IF EXISTS `cliente_endereco`;
 CREATE TABLE `cliente_endereco` (
   `id_endereco` int(11) NOT NULL,
   `clc_id` int(11) DEFAULT NULL,
@@ -81,7 +83,6 @@ INSERT INTO `cliente_endereco` (`id_endereco`, `clc_id`, `rua`, `numero`, `bairr
 -- Estrutura da tabela `companies`
 --
 
-DROP TABLE IF EXISTS `companies`;
 CREATE TABLE `companies` (
   `id` int(11) NOT NULL,
   `name` varchar(45) COLLATE utf8_bin DEFAULT NULL
@@ -100,7 +101,6 @@ INSERT INTO `companies` (`id`, `name`) VALUES
 -- Estrutura da tabela `concessionaria`
 --
 
-DROP TABLE IF EXISTS `concessionaria`;
 CREATE TABLE `concessionaria` (
   `id` int(11) NOT NULL,
   `razao_social` varchar(255) DEFAULT NULL,
@@ -113,7 +113,11 @@ CREATE TABLE `concessionaria` (
 
 INSERT INTO `concessionaria` (`id`, `razao_social`, `id_company`) VALUES
 (55, 'Enel', 1),
-(56, 'Concessionaria 2', 1);
+(56, 'Concessionaria 2', 1),
+(57, 'Eson', 1),
+(58, 'Eson', 1),
+(60, 'Enelson', 1),
+(61, 'Friboi', 1);
 
 -- --------------------------------------------------------
 
@@ -121,7 +125,6 @@ INSERT INTO `concessionaria` (`id`, `razao_social`, `id_company`) VALUES
 -- Estrutura da tabela `concessionaria_servico`
 --
 
-DROP TABLE IF EXISTS `concessionaria_servico`;
 CREATE TABLE `concessionaria_servico` (
   `id` int(11) NOT NULL,
   `id_concessionaria` int(11) DEFAULT NULL,
@@ -136,7 +139,13 @@ INSERT INTO `concessionaria_servico` (`id`, `id_concessionaria`, `id_servico`) V
 (75, 55, 6),
 (76, 55, 7),
 (77, 56, 8),
-(78, 56, 7);
+(78, 56, 7),
+(79, 57, 6),
+(80, 58, 6),
+(81, 59, 6),
+(82, 60, 6),
+(83, 61, 7),
+(84, 61, 8);
 
 -- --------------------------------------------------------
 
@@ -144,7 +153,6 @@ INSERT INTO `concessionaria_servico` (`id`, `id_concessionaria`, `id_servico`) V
 -- Estrutura da tabela `documentos`
 --
 
-DROP TABLE IF EXISTS `documentos`;
 CREATE TABLE `documentos` (
   `id` int(11) NOT NULL,
   `docs_nome` varchar(255) DEFAULT NULL,
@@ -166,7 +174,6 @@ INSERT INTO `documentos` (`id`, `docs_nome`, `id_company`, `docs_link`) VALUES
 -- Estrutura da tabela `documentos_concessionaria`
 --
 
-DROP TABLE IF EXISTS `documentos_concessionaria`;
 CREATE TABLE `documentos_concessionaria` (
   `id` int(11) NOT NULL,
   `id_documento` int(11) DEFAULT NULL,
@@ -187,33 +194,41 @@ INSERT INTO `documentos_concessionaria` (`id`, `id_documento`, `id_concessionari
 -- Estrutura da tabela `etapa`
 --
 
-DROP TABLE IF EXISTS `etapa`;
 CREATE TABLE `etapa` (
   `id` int(11) NOT NULL,
-  `etp_nome` varchar(255) DEFAULT NULL
+  `etp_nome` varchar(255) DEFAULT NULL,
+  `prazo_etapa` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `etapa`
 --
 
-INSERT INTO `etapa` (`id`, `etp_nome`) VALUES
-(40, 'Pintura Enel 1'),
-(41, 'Pintura Enel 2'),
-(42, 'Pintura Enel 3'),
-(43, 'Pintura Enel 4'),
-(44, 'Pintura Enel 5'),
-(45, 'Projeção Enel 1'),
-(46, 'Projeção Enel 2'),
-(47, 'Projeção Enel 3'),
-(48, 'Projeção Enel 4'),
-(49, 'Projeção Enel 5'),
-(50, 'Construção 1'),
-(51, 'Construção 2'),
-(52, 'Construção 3'),
-(53, 'Projeção 1'),
-(54, 'Projeção 2'),
-(55, 'Projeção 3');
+INSERT INTO `etapa` (`id`, `etp_nome`, `prazo_etapa`) VALUES
+(40, 'Pintura Enel 1', NULL),
+(41, 'Pintura Enel 2', NULL),
+(42, 'Pintura Enel 3', NULL),
+(43, 'Pintura Enel 4', NULL),
+(44, 'Pintura Enel 5', NULL),
+(45, 'Projeção Enel 1', NULL),
+(46, 'Projeção Enel 2', NULL),
+(47, 'Projeção Enel 3', NULL),
+(48, 'Projeção Enel 4', NULL),
+(49, 'Projeção Enel 5', NULL),
+(50, 'Construção 1', NULL),
+(51, 'Construção 2', NULL),
+(52, 'Construção 3', NULL),
+(53, 'Projeção 1', NULL),
+(54, 'Projeção 2', NULL),
+(55, 'Projeção 3', NULL),
+(56, 'Pintura Eson 1', NULL),
+(57, 'Pintura 4', NULL),
+(58, 'Projeto friboi 1', '1'),
+(59, 'Projeto friboi 2', '2'),
+(60, 'Projeto friboi 3', '3'),
+(61, 'Construção Friboi 1', '4'),
+(62, 'Construção Friboi 2', '4'),
+(63, 'Construção Friboi 3', '5');
 
 -- --------------------------------------------------------
 
@@ -221,7 +236,6 @@ INSERT INTO `etapa` (`id`, `etp_nome`) VALUES
 -- Estrutura da tabela `etapas_servico_concessionaria`
 --
 
-DROP TABLE IF EXISTS `etapas_servico_concessionaria`;
 CREATE TABLE `etapas_servico_concessionaria` (
   `id` int(11) NOT NULL,
   `id_concessionaria` int(11) DEFAULT NULL,
@@ -249,7 +263,40 @@ INSERT INTO `etapas_servico_concessionaria` (`id`, `id_concessionaria`, `id_serv
 (49, 56, 8, 52),
 (50, 56, 7, 53),
 (51, 56, 7, 54),
-(52, 56, 7, 55);
+(52, 56, 7, 55),
+(53, 58, 6, 56),
+(54, 60, 6, 57),
+(55, 61, 7, 58),
+(56, 61, 7, 59),
+(57, 61, 7, 60),
+(58, 61, 8, 61),
+(59, 61, 8, 62),
+(60, 61, 8, 63);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `notificacoes`
+--
+
+CREATE TABLE `notificacoes` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `id_user` int(11) DEFAULT NULL,
+  `data_notificacao` datetime DEFAULT NULL,
+  `notificacao_tipo` varchar(50) DEFAULT NULL,
+  `propriedades` text,
+  `lido` tinyint(1) DEFAULT '0',
+  `link` varchar(100) DEFAULT NULL,
+  `id_company` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `notificacoes`
+--
+
+INSERT INTO `notificacoes` (`id`, `id_user`, `data_notificacao`, `notificacao_tipo`, `propriedades`, `lido`, `link`, `id_company`) VALUES
+(2, 1, NULL, 'PENDENÇA', '{\"msg\":\"Notificacao de teste\"}', 1, 'laskjrlkajsr', 1),
+(3, 1, NULL, 'URGENCIA', '{\"msg\":\"Obra 55 do cliente: Marcos, pendente\"}', 1, 'alsrjklasjrljasr', 1);
 
 -- --------------------------------------------------------
 
@@ -257,7 +304,6 @@ INSERT INTO `etapas_servico_concessionaria` (`id`, `id_concessionaria`, `id_serv
 -- Estrutura da tabela `obra`
 --
 
-DROP TABLE IF EXISTS `obra`;
 CREATE TABLE `obra` (
   `id` int(11) NOT NULL,
   `id_company` int(11) DEFAULT NULL,
@@ -272,7 +318,12 @@ CREATE TABLE `obra` (
 --
 
 INSERT INTO `obra` (`id`, `id_company`, `id_servico`, `id_cliente`, `id_concessionaria`, `obr_razao_social`) VALUES
-(1, 1, 6, 40, 52, 'Casa Marcos');
+(1, 1, 6, 40, 52, 'Casa Marcos'),
+(2, 1, 6, 40, 55, 'Casa Marcos'),
+(3, 1, 6, 0, 55, 'Casa Gabriel'),
+(4, 1, 6, 41, 55, 'Casa Gabriel'),
+(5, 1, 6, 44, 60, 'Casa Luana'),
+(6, 1, 7, 45, 61, 'Casa Nelly');
 
 -- --------------------------------------------------------
 
@@ -280,7 +331,6 @@ INSERT INTO `obra` (`id`, `id_company`, `id_servico`, `id_cliente`, `id_concessi
 -- Estrutura da tabela `permission_groups`
 --
 
-DROP TABLE IF EXISTS `permission_groups`;
 CREATE TABLE `permission_groups` (
   `id` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
@@ -303,7 +353,6 @@ INSERT INTO `permission_groups` (`id`, `id_usuario`, `params`, `id_company`) VAL
 -- Estrutura da tabela `permission_params`
 --
 
-DROP TABLE IF EXISTS `permission_params`;
 CREATE TABLE `permission_params` (
   `id` int(11) NOT NULL,
   `name` varchar(50) COLLATE utf8_bin NOT NULL,
@@ -347,7 +396,6 @@ INSERT INTO `permission_params` (`id`, `name`, `id_company`) VALUES
 -- Estrutura da tabela `servico`
 --
 
-DROP TABLE IF EXISTS `servico`;
 CREATE TABLE `servico` (
   `id` int(11) NOT NULL,
   `sev_nome` varchar(255) DEFAULT NULL,
@@ -370,7 +418,6 @@ INSERT INTO `servico` (`id`, `sev_nome`, `id_company`) VALUES
 -- Estrutura da tabela `users`
 --
 
-DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `email` varchar(50) COLLATE utf8_bin DEFAULT NULL,
@@ -453,6 +500,12 @@ ALTER TABLE `etapas_servico_concessionaria`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `notificacoes`
+--
+ALTER TABLE `notificacoes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `obra`
 --
 ALTER TABLE `obra`
@@ -492,7 +545,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `cliente_endereco`
@@ -504,13 +557,13 @@ ALTER TABLE `cliente_endereco`
 -- AUTO_INCREMENT for table `concessionaria`
 --
 ALTER TABLE `concessionaria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `concessionaria_servico`
 --
 ALTER TABLE `concessionaria_servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `documentos`
@@ -528,19 +581,25 @@ ALTER TABLE `documentos_concessionaria`
 -- AUTO_INCREMENT for table `etapa`
 --
 ALTER TABLE `etapa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `etapas_servico_concessionaria`
 --
 ALTER TABLE `etapas_servico_concessionaria`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+
+--
+-- AUTO_INCREMENT for table `notificacoes`
+--
+ALTER TABLE `notificacoes`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `obra`
 --
 ALTER TABLE `obra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `permission_groups`
