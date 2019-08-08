@@ -14,7 +14,7 @@
 
                             <li>
                                 <span class="text"><?php echo $etp['etp_nome']; ?></span>
-                                <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
+                                <small class="label label-danger"><i class="fa fa-clock-o"> </i><?php echo ' '.$etp['prazo_etapa']; ?> dias </small>
                                 <div class="tools">
                                     <i class="fa fa-edit"></i>
                                     <i class="fa fa-trash-o"></i>

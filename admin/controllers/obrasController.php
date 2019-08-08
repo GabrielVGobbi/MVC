@@ -38,6 +38,14 @@ class obrasController extends controller
                 $this->filtro = $_GET['filtros'];
             }
 
+            $this->dataInfo['p'] = 1;
+			if (isset($_GET['p']) && !empty($_GET['p'])) {
+				$this->dataInfo['p'] = intval($_GET['p']);
+				if ($this->dataInfo['p'] == 0) {
+					$this->dataInfo['p'] = 1;
+				}
+            }
+
             $this->dataInfo['tableDados'] = $this->obra->getAll($this->filtro, $this->user->getCompany());
             $this->dataInfo['getCount']   = $this->obra->getCount($this->user->getCompany());
             $this->dataInfo['p_count']    = ceil($this->dataInfo['getCount'] / 10);
@@ -46,10 +54,8 @@ class obrasController extends controller
             $this->dataInfo['concessionaria'] = $this->concessionaria->getAll('', $this->user->getCompany());
             $this->dataInfo['servico'] = $this->servico->getAll('', $this->user->getCompany());
 
-
-
-
             $this->loadTemplate($this->dataInfo['pageController'] . "/index", $this->dataInfo);
+            
         } else {
             $this->loadViewError();
         }
@@ -72,9 +78,9 @@ class obrasController extends controller
     public function add_action()
     {
 
-        if (isset($_POST['sev_nome']) && $_POST['sev_nome'] != '') {
+        if (isset($_POST['obra_nome']) && $_POST['obra_nome'] != '') {
 
-            $result = $this->painel->insert($_POST, $this->dataInfo['nome_tabela'], $this->user->getCompany());
+            $result = $this->obra->add($_POST, $this->user->getCompany());
 
             $this->addValicao($result);
 

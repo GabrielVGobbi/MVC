@@ -162,7 +162,7 @@ class Cliente extends model
 			$sql->execute();
 		}
 
-		return $this->retorno;
+		return $this->db->lastInsertId();
 	}
 
 	public function edit($Parametros)
@@ -299,5 +299,24 @@ class Cliente extends model
 		}
 
 		return $this->array;
+	}
+
+	public function searchClienteByName($var, $id_company){
+
+		$sql = $this->db->prepare("
+			SELECT * FROM cliente
+			WHERE id_company = :id_company AND cliente_nome like :cliente_nome
+		");
+
+		$sql->bindValue(':cliente_nome', '%'.$var.'%');
+		$sql->bindValue(':id_company', $id_company);
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$this->array = $sql->fetchAll();
+		}
+
+		return $this->array;
+
 	}
 }

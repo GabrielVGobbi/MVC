@@ -66,15 +66,30 @@
                                         </div>
                                         <div class="box-body" style="">
                                             <div class="" style="">
-                                                <div class="col-md-12">
+                                                <div class="col-md-10">
                                                     <div class="form-group">
-                                                        <label>Sub-Serviços</label>
-                                                        <input type="text" class="form-control" name="etapas[]" id="etapas[]" autocomplete="off">
-                                                        <div class="etapa_add"> </div>
+                                                        <label>Sub-Serviço</label>
+                                                        <input type="text" class="form-control" name="etapas[nome_etapa][]" id="etapas[]" autocomplete="off">
+
                                                     </div>
                                                 </div>
-                                            </div>
 
+
+                                                <div class="col-md-2">
+                                                    <label>Prazo</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="etapas[prazo_etapa][]" id="etapas[]" autocomplete="off">
+                                                        <div class="input-group-btn">
+                                                            <div class="btn btn-default">
+                                                                <i></i> Dias
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                
+                                            </div>
+                                            <div class="etapa_add"> </div>
 
                                         </div>
                                     </div>
@@ -87,7 +102,7 @@
                             <button type="submit" class="btn btn-primary">Salvar</button>
                         </div>
                     </div>
-                </div> 
+                </div>
             </form>
         </div>
     </div>

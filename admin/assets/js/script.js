@@ -148,7 +148,9 @@ $(function() {
 
         e.preventDefault();
 
-        html = '<input type="text" class="form-control" name="etapas[]" id="etapas[]" autocomplete="off">';
+        html = '<div class="col-md-10"><div class="form-group"><label>Sub-Serviço</label> <input type="text" class="form-control" name="etapas[nome_etapa][]" id="etapas[]" autocomplete="off"></div></div>';
+
+        html += '<div class="col-md-2"> <label>Prazo</label><div class="input-group"><input type="text" class="form-control" name="etapas[prazo_etapa][]" id="etapas[]" autocomplete="off"><div class="input-group-btn"><div class="btn btn-default"><i></i> Dias </div> </div></div></div>';
 
         $('.etapa_add').append(html);
 

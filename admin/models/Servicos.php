@@ -145,4 +145,21 @@ class Servicos extends model
 
 		return $this->array;
 	}
+
+	public function getServicoByConcessionaria($id_concessionaria)
+	{
+
+		$sql = "SELECT *, sev.id AS id_servico FROM concessionaria_servico consev
+		INNER JOIN servico sev ON(sev.id = consev.id_servico) WHERE id_concessionaria = :id_concessionaria";
+
+		$sql = $this->db->prepare($sql);
+		$sql->bindValue(":id_concessionaria", $id_concessionaria);
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$this->array = $sql->fetchAll();
+		}
+
+		return $this->array;
+	}
 }

@@ -129,4 +129,43 @@ class Obras extends model
 			controller::alert('error', 'Usuario desativado com sucesso!!');
 		}
 	}
+
+	public function add($Parametros, $id_company)
+	{
+		try {
+			$sql = $this->db->prepare("INSERT INTO obra SET 
+					id_company = :id_company,
+					id_servico = :id_servico,
+					id_cliente = :id_cliente,
+					id_concessionaria = :id_concessionaria,
+					obr_razao_social = :razao_social
+
+			
+			");
+
+			$sql->bindValue(":razao_social", $Parametros['obra_nome']);
+			$sql->bindValue(":id_servico", $Parametros['servico']);
+			$sql->bindValue(":id_cliente", $Parametros['id_cliente']);
+			$sql->bindValue(":id_concessionaria", $Parametros['concessionaria']);
+			$sql->bindValue(":id_company", $id_company);
+
+
+			if ($sql->execute()) {
+				controller::alert('success', 'Obra criado com sucesso!!');
+	
+			} else {
+				controller::alert('error', 'Não foi possivel fazer o cadastro da obra, Contate o administrador do sistema!!');
+			}
+
+			$id = $this->db->lastInsertId();
+
+
+		} catch (PDOExecption $e) {
+			$sql->rollback();
+			error_log(print_r("Error!: " . $e->getMessage() . "</br>", 1));
+		}
+
+
+		return $this->retorno;
+	}
 }

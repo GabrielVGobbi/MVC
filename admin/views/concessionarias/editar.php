@@ -44,7 +44,7 @@
 													<div class="input-group" style="width: 50%;">
 														<input type="text" class="form-control" name="servico_concessionaria" id="servico_concessionaria" autocomplete="off" value="<?php echo $scon['sev_nome']; ?>">
 														<div class="input-group-btn">
-															<div class="btn btn-info"  title=""  data-toggle="modal" data-target="#view_tarefas<?php echo $scon['id'];?>" data-original-title="Ver Tarefas">
+															<div class="btn btn-info" title="" data-toggle="modal" data-target="#view_tarefas<?php echo $scon['id']; ?>" data-original-title="Ver Tarefas">
 																<i class="ion ion-clipboard"></i>
 															</div>
 														</div>
@@ -59,7 +59,7 @@
 
 									<div class="col-md-10" style="display:none;" id="new_service">
 										<div class="input-group">
-											<label>Adicionar novo serviço</label>
+											<label>Adicionar novo Sub-Serviço</label>
 											<select class="form-control select2-add-service select2-hidden-accessible service_add" data-placeholder="Selecione o serviço" style="width: 100%;" name="servico[]" id="new_servico[]" aria-hidden="true" required>
 												<option> selecione </option>
 												<?php foreach ($tableInfo['servico_not_concessionaria'] as $sev) : ?>
@@ -76,15 +76,27 @@
 												<h3 class="box-title title-etapas">Etapas</h3>
 											</div>
 											<div class="box-body">
-												<ul class="todo-list">
-													<div class="col-md-10">
-														<input type="text" class="form-control" name="etapas[]" id="etapa_new_service" required autocomplete="off">
+												<div class="col-md-10">
+													<div class="form-group">
+														<label>Sub-Serviço</label>
+														<input type="text" class="form-control" name="etapas[nome_etapa][]" id="etapas[]" autocomplete="off">
+
 													</div>
-													<div class="col-md-10">
-														<input type="text" class="form-control" name="etapas[]" id="etapa_new_service" autocomplete="off">
-														<div class="etapa_add"></div>
+												</div>
+
+
+												<div class="col-md-2">
+													<label>Prazo</label>
+													<div class="input-group">
+														<input type="text" class="form-control" name="etapas[prazo_etapa][]" id="etapas[]" autocomplete="off">
+														<div class="input-group-btn">
+															<div class="btn btn-default">
+																<i></i> Dias
+															</div>
+														</div>
 													</div>
-												</ul>
+												</div>
+												<div class="etapa_add"> </div>
 											</div>
 											<div class="box-footer clearfix no-border">
 												<button type="button" class="btn btn-default pull-right new_etapa"><i class="fa fa-plus"></i> Add Etapa</button>
@@ -113,17 +125,17 @@
 								<div class="box-body" style="">
 									<div class="col-md-6">
 										<?php if (count($documentos_concessionaria) > 0) : ?>
-																						<?php foreach ($documentos_concessionaria as $docs) : ?>
-																																		<div class="input-group">
-																																			<input type="text" class="form-control" name="documentos_concessionaria" id="documentos_concessionaria" autocomplete="off" value="<?php echo $docs['docs_nome']; ?>">
-																																			<span class="input-group-btn">
-																																				<a href="<?php echo BASE_URL ?>assets/documentos/<?php echo $docs['docs_nome']; ?>" target="_blank" class="btn btn-info btn-flat" data-toggle="tooltip" title="" data-original-title="Ver Documento">
-																																					<i class="fa fa-info"></i></a>
-																																			</span>
-																																		</div>
-																						<?php endforeach; ?>
+																							<?php foreach ($documentos_concessionaria as $docs) : ?>
+																																				<div class="input-group">
+																																					<input type="text" class="form-control" name="documentos_concessionaria" id="documentos_concessionaria" autocomplete="off" value="<?php echo $docs['docs_nome']; ?>">
+																																					<span class="input-group-btn">
+																																						<a href="<?php echo BASE_URL ?>assets/documentos/<?php echo $docs['docs_nome']; ?>" target="_blank" class="btn btn-info btn-flat" data-toggle="tooltip" title="" data-original-title="Ver Documento">
+																																							<i class="fa fa-info"></i></a>
+																																					</span>
+																																				</div>
+																							<?php endforeach; ?>
 										<?php else : ?>
-																						Não foram encontrados resultados.
+																							Não foram encontrados resultados.
 										<?php endif; ?>
 										<div class="objeto"> </div>
 									</div>

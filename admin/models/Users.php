@@ -178,7 +178,7 @@ class Users extends model
 
         
 		WHERE " . implode(' AND ', $where) . " ORDER BY usr.id  ASC LIMIT $offset, 10";
-				
+
 
 		$sql = $this->db->prepare($sql);
 
@@ -244,7 +244,7 @@ class Users extends model
 		$sql->execute();
 
 		if (isset($Parametros['permission_check'])) {
-			$param = implode(',',$Parametros['permission_check']);
+			$param = implode(',', $Parametros['permission_check']);
 			$sql = $this->db->prepare("UPDATE permission_groups SET params = :params WHERE id_usuario = :id AND id_company = :id_company");
 			$sql->bindValue(":params", $param);
 			$sql->bindValue(":id_company", $id_company);
@@ -254,16 +254,15 @@ class Users extends model
 			} else {
 				$certo = false;
 			}
-		}else {
+		} else {
 			$certo = false;
 		}
 
-		if($certo == true){
+		if ($certo == true) {
 			return $this->retorno = 'sucess';
-		}else {
+		} else {
 			return $this->retorno = 'error';
 		}
-		
 	}
 
 	public function delete($id, $id_company)
@@ -337,14 +336,14 @@ class Users extends model
 		$sql = $this->db->prepare($sql);
 
 		$this->bindWhere($filtro, $sql);
-		
+
 		$sql->execute();
 		$row = $sql->fetch();
 		$r = $row['c'];
 		return $r;
 	}
 
-	
+
 	public function hasPermissionByidSearch($name, $id_user, $id_company)
 	{
 		$sql = $this->db->prepare("SELECT * FROM permission_groups WHERE id_usuario = :id AND id_company = :id_company");
@@ -379,4 +378,36 @@ class Users extends model
 		}
 	}
 
+	public function verificarMensagem($id_company, $id_user)
+	{
+		$sql = $this->db->prepare("SELECT * FROM notificacoes WHERE id_user = :id_user AND lido = '0' AND id_company = :id_company");
+		$sql->bindValue(':id_company', $id_company);
+		$sql->bindValue(':id_user', $id_user);
+		$sql->execute();
+
+		$array = array('qtn' => 0);
+
+		if ($sql->rowCount() > 0) {
+
+			$array['qtn'] = $sql->rowCount();
+		}
+
+		return json_encode($array);
+	}
+
+	public function getNotificacao($id_user, $id_company)
+	{
+		$array = array();
+		$sql = $this->db->prepare("SELECT * FROM notificacoes WHERE id_user = :id_user AND id_company = :id_company");
+		$sql->bindValue(':id_user',$id_user);
+		$sql->bindValue(':id_company',$id_company);
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$array = $sql->fetchAll();
+				
+			
+		}
+		return $array;
+	}
 }

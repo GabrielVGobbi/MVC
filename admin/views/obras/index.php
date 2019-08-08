@@ -22,41 +22,48 @@
 
 		<div class="box-body no-padding">
 			<?php include_once("filtro.php"); ?>
-			<div class="" style="margin-top:20px;">
-				<?php foreach ($tableDados as $obr) : ?>
 
-					<div class="col-md-12">
-						<a type="button" style="cursor: pointer;" data-widget="collapse">
-							<div class="box box-default collapsed-box">
-								<div class="box-header with-border">
-									<h3 class="box-title">Obra: <?php echo $obr['id'];?> - Cliente: <?php echo $obr['obr_razao_social'];?></h3>
-									<div class="box-tools pull-right">
-										<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-										</button>
-									</div>
-								</div>
-						</a>
+
+			<?php foreach ($tableDados as $obr) : ?>
+				<div class="col-md-6" style="margin-top:20px;">
+					<div class="box box-success">
+						<div class="box-header with-border">
+							<h3 class="box-title">Obra: <?php echo $obr[0]; ?> - <?php echo $obr['obr_razao_social']; ?></h3>
+						</div>
 						<div class="box-body">
-							The body of the box
+							<dl class="">
+								<dt>Description lists</dt>
+								<dd>A description list is perfect for defining terms.</dd>
+								<dt>Euismod</dt>
+								<dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
+								<dd>Donec id elit non mi porta gravida at eget metus.</dd>
+								<dt>Malesuada porta</dt>
+								<dd>Etiam porta sem malesuada magna mollis euismod.</dd>
+								<dt>Felis euismod semper eget lacinia</dt>
+								<dd>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo
+									sit amet risus.
+								</dd>
+							</dl>
 						</div>
 					</div>
-				<?php endforeach; ?>
-			</div>
+				</div>
+			<?php endforeach; ?>
+
 		</div>
 
-	</div>
-	<div class="box-footer no-padding">
-		<div class="mailbox-controls">
-			<ul class="pagination pagination-sm pull-right">
-				<?php for ($q = 1; $q <= $p_count; $q++) : ?>
-					<li class="<?php echo ($q == $p) ? 'active' : '' ?> ">
-						<a href="<?php echo BASE_URL; ?>obras?p=<?php $w = $_GET;
-																$w['p'] = $q;
-																echo http_build_query($w); ?>"><?php echo $q; ?></a>
-					</li>
-				<?php endfor; ?>
-			</ul>
+
+		<div class="box-footer no-padding">
+			<div class="mailbox-controls">
+				<ul class="pagination pagination-sm pull-right">
+					<?php for ($q = 1; $q <= $p_count; $q++) : ?>
+						<li class="<?php echo ($q == $p) ? 'active' : '' ?> ">
+							<a href="<?php echo BASE_URL; ?>obras?p=<?php $w = $_GET;
+																	$w['p'] = $q;
+																	echo http_build_query($w); ?>"><?php echo $q; ?></a>
+						</li>
+					<?php endfor; ?>
+				</ul>
+			</div>
 		</div>
 	</div>
-</div>
 </div>

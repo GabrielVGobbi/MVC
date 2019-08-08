@@ -17,11 +17,14 @@
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/AdminLTE-2.4.5/plugins/iCheck/all.css">
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/AdminLTE-2.4.5/dist/css/skins/_all-skins.min.css">
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/AdminLTE-2.4.5/bower_components/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/template.css">
+
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 
 </head>
+
 <body class="skin-blue layout-top-nav">
   <div class="wrapper">
 
@@ -70,22 +73,29 @@
             <ul class="nav navbar-nav">
               <li class="dropdown messages-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  <i class="fa fa-envelope-o"></i>
-                  <span class="label label-success">4</span>
+                  <i class="fa fa-bell-o"></i>
+                  <span class="label label-success notificacao-mensagem "></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">Você tem 4 mensagens</li>
+                  <li class="header notificacao-mensagem-header"></li>
                   <li>
                     <ul class="menu">
-                      <li>
-                        <a href="#">
-                          <h4>
-                            Luana 
-                            <small><i class="fa fa-clock-o"></i> 2 mins</small>
-                          </h4>
-                          <p>obra "tal" faltando documento</p>
-                        </a>
-                      </li>                    
+                      <?php 
+                        foreach ($this->userInfo['notificacao'] as $not) : 
+                        $propriedades = json_decode($not['propriedades']);
+
+                        
+                        ?>
+                        <li>
+                          <a href="#">
+                            <h4>
+                              <?php echo $not['notificacao_tipo']; ?>
+                              <small><i class="fa fa-clock-o"></i> 2 mins</small>
+                            </h4>
+                            <p><?php echo $propriedades->msg; ?></p>
+                          </a>
+                        </li>
+                      <?php endforeach; ?>
                     </ul>
                   </li>
                   <li class="footer"><a href="#">Ver todas</a></li>
@@ -93,7 +103,7 @@
               </li>
               <li class="dropdown notifications-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-bell-o"></i>
+                  <i class="fa fa-envelope-o"></i>
                   <span class="label label-warning">1</span>
                 </a>
                 <ul class="dropdown-menu">
@@ -184,15 +194,16 @@
         <section class="content">
 
           <?php if (isset($_SESSION['alert'])) : ?>
-
-            <div class="center">
-              <div class="alert alert-<?php echo $_SESSION['alert']['tipo']; ?> alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                <?php echo $_SESSION['alert']['mensagem']; ?>
+            <div class="goaway" id="goaway">
+              <div class="center">
+                <div class="alert alert-<?php echo $_SESSION['alert']['tipo']; ?> alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                  <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                  <?php echo $_SESSION['alert']['mensagem']; ?>
+                </div>
               </div>
             </div>
-            <?php unset($_SESSION['alert']);?>
+            <?php unset($_SESSION['alert']); ?>
 
           <?php endif; ?>
           <?php $this->loadViewInTemplate($viewName, $viewData); ?>
@@ -209,7 +220,57 @@
       </div>
     </footer>
   </div>
-  
+
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        $("#goaway").fadeOut().empty();
+      }, 2000);
+    }, false);
+
+
+    function verificarNotificacao() {
+
+      $.ajax({
+        url: 'ajax/verificarMensagem',
+        type: 'POST',
+        dataType: 'json',
+        success: function(json) {
+          console.log(json[7]);
+
+          if (json[7] > 0) {
+            $('.notificacao-mensagem').html(json[7]);
+            $('.notificacao-mensagem-header').html('Você tem ' + json[7] + ' Notificações Pendente');
+            $('.notificacao-mensagem').addClass('fa-blink');
+          } else {
+            $('.notificacao-mensagem').html('0');
+            $('.notificacao-mensagem-header').html('Você não tem nenhuma notificação');
+            $('.notificacao-mensagem').removeClass('fa-blink');
+          }
+
+        }
+      });
+
+    }
+
+    $(function() {
+      setInterval(verificarNotificacao, 2000);
+      verificarNotificacao();
+
+      $('.notificacoes').on('click', function() {
+
+      });
+
+      $('.addNotif').on('click', function() {
+        $.ajax({
+          url: 'add.php'
+        });
+      });
+    });
+  </script>
+
+
+
   <script src="<?php echo BASE_URL; ?>node_modules/sweetalert/dist/sweetalert.min.js"></script>
 
   <script src="<?php echo BASE_URL; ?>assets/css/AdminLTE-2.4.5/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

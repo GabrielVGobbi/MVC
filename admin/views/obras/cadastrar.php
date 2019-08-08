@@ -1,7 +1,7 @@
 <div class="modal fade bd-example-modal-lg" id="modalCadastro" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form method="POST" enctype="multipart/form-data" action="<?php echo BASE_URL ?>servicos/add_action">
+            <form method="POST" enctype="multipart/form-data" action="<?php echo BASE_URL ?>obras/add_action">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -22,7 +22,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Nome da Obra</label>
-                                                    <input type="text" class="form-control" name="sev_nome" id="sev_nome" autocomplete="off">
+                                                    <input type="text" class="form-control" name="obra_nome" id="obra_nome" autocomplete="off" required>
                                                 </div>
 
                                             </div>
@@ -30,7 +30,7 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Concessionaria</label>
-                                                    <select class="form-control select2 concessionaria_select" style="width: 100%;" name="servico[]" id="id_concessionaria" aria-hidden="true" required>
+                                                    <select class="form-control select2 concessionaria_select" style="width: 100%;" name="concessionaria" id="id_concessionaria" aria-hidden="true" required>
                                                         <option value="">selecione</option>
                                                         <?php foreach ($viewData['concessionaria'] as $com) : ?>
                                                             <option value="<?php echo $com['id']; ?>"><?php echo $com['razao_social'] ?></option>
@@ -42,24 +42,31 @@
                                             <div class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Tipo de Obra/Serviço</label>
-                                                    <select class="form-control select2 servico_select" style="width: 100%;" name="servico[]" id="id_servico" aria-hidden="true" required>
-                                                        <option value="">selecione</option>
-                                                        <?php foreach ($viewData['servico'] as $sev) : ?>
-                                                            <option value="<?php echo $sev['id']; ?>"><?php echo $sev['sev_nome'] ?></option>
-                                                        <?php endforeach; ?>
+                                                    <select class="form-control select2 service_select" style="width: 100%;" name="servico" id="id_servico" required>
+                                                        <option value="">selecione a concessionaria</option>
                                                     </select>
                                                 </div>
                                             </div>
 
-                                            <div class="col-md-12">
-                                                <div class="form-group">
-                                                    <label>Cliente</label>
-                                                    <select class="form-control select2" style="width: 100%;" name="servico[]" id="servico[]" aria-hidden="true" required>
-                                                        <option value="">selecione</option>
-                                                        <?php foreach ($viewData['clientes'] as $cli) : ?>
-                                                            <option value="<?php echo $cli['id']; ?>"><?php echo $cli['cliente_nome'] ?></option>
-                                                        <?php endforeach; ?>
-                                                    </select>
+                                            <div class="col-md-12" style="margin-bottom:6px;">
+                                                <label>Cliente</label>
+                                                <div class="input-group">
+                                                    <input type="hidden" name="id_cliente" id="id_cliente" class="form-control">
+                                                    <input type="text" class="form-control" name="cliente" id="cliente" required data-type="search_cliente" required="" autocomplete="off">
+                                                    <span onclick="add_cliente()" style="cursor: pointer;border-color: #f00;border-left: 1%;" class="input-group-addon span-cliente"><i class="fa fa-check has-error"></i></span>
+                                                </div>
+                                                <div id="art" type="hidden">
+
+                                                    <span class="span-dropdown">
+                                                        <span class="span-dropdown-2">
+                                                            <ul class="ul-span-dropdown">
+                                                                <div class="searchresultscliente">
+
+                                                                </div>
+                                                            </ul>
+                                                        </span>
+                                                    </span>
+
                                                 </div>
                                             </div>
 
@@ -67,16 +74,16 @@
                                                 <div class="box box-primary span_etapa" style="display:none;">
                                                     <div class="box-header">
                                                         <i class="ion ion-clipboard"></i>
-                                                        <h3 class="box-title">Tarefas de ""</h3>
+                                                        <h3 class="box-title tarefas-tittle">Tarefas de ""</h3>
                                                     </div>
                                                     <div class="box-body">
                                                         <ul class="todo-list">
                                                             <div class="" id="id_sub_etapas"> </div>
                                                         </ul>
                                                     </div>
-                                                    <div class="box-footer clearfix no-border">
+                                                    <!--<div class="box-footer clearfix no-border">
                                                         <button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
-                                                    </div>
+                                                    </div>-->
                                                 </div>
 
                                                 <div class="box box-primary result_null" style="display:none;">
@@ -85,7 +92,7 @@
                                                     </div>
                                                     <div class="box-body">
                                                         <div style="text-align: center;">
-                                                            <span class="" id="result_null">  </span>
+                                                            <span class="" id="result_null"> </span>
                                                         </div>
                                                     </div>
 
@@ -98,7 +105,7 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Salvar</button>
+                            <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
                         </div>
                     </div>
                 </div>
@@ -111,12 +118,53 @@
 
 <script type="text/javascript">
     $(function() {
-        $('#id_servico').change(function() {
+
+        $('#id_concessionaria').change(function() {
 
             var select = $('.concessionaria_select').select2('data');
             if (select) {
-                console.log(select[0].id);
+
             }
+
+            if ($(this).val()) {
+                $.getJSON('ajax/searchServicoByConcessionaria?search=', {
+                    id_concessionaria: select[0].id,
+                    ajax: 'true'
+                }, function(j) {
+                    var options = '<option value="">selecione</option>';
+
+                    if (j.length != 0) {
+                        for (var i = 0; i < j.length; i++) {
+                            options += '<option value="' + j[i].id_servico + '">' + j[i].sev_nome + '</option>';
+
+                        }
+                        $('#id_servico').html(options).show();
+                        $('.span_etapa').hide();
+
+
+
+                    } else {
+
+                    }
+
+
+                });
+            } else {
+                options = 'Selecione o Serviço'
+                $('.span_etapa').hide();
+
+                $('#result_null').html(options).show();
+                $('.result_null').show();
+            }
+        });
+
+
+
+        $('#id_servico').change(function() {
+
+            var select = $('.concessionaria_select').select2('data');
+            if (select) {}
+            service = $('.service_select').select2('data');
 
 
             if ($(this).val()) {
@@ -127,11 +175,12 @@
                 }, function(j) {
                     var options = '';
 
-                    console.log(j);
 
                     if (j.length != 0) {
                         for (var i = 0; i < j.length; i++) {
                             options += '<input type="text" disabled class="form-control" value="' + j[i].nome_sub_categoria + '"></input>';
+                            $('.tarefas-tittle').html('Tarefas de ' + service[0].text)
+
                         }
                         $('#id_sub_etapas').html(options).show();
                         $('.span_etapa').show();
@@ -148,8 +197,114 @@
 
                 });
             } else {
-                $('#id_sub_etapas').html('selecione o Serviço');
+                options = 'Selecione o Serviço'
+                $('.span_etapa').hide();
+
+                $('#result_null').html(options).show();
+                $('.result_null').show();
             }
         });
+
+        $('#cliente').on('keyup', function() {
+            var datatype = $(this).attr('data-type');
+            var q = $(this).val();
+
+            if (datatype != '') {
+                $.ajax({
+                    url: BASE_URL + 'ajax/' + datatype,
+                    type: 'GET',
+                    data: {
+                        q: q
+                    },
+                    dataType: 'JSON',
+                    success: function(json) {
+                        if ($('.searchresultscliente').length == 0) {
+                            $('#art').after('<div class="searchresultscliente"></div>');
+
+                        }
+
+                        $('.searchresultscliente').css('left', $('#art').offset().left + 'px');
+                        $('.searchresultscliente').css('top', $('#art').offset().top + $('#art').height() + 5 + 'px');
+
+                        var html = '';
+
+                        for (var i in json) {
+                            html += '<li class="select2-results__option"  role="treeitem" aria-selected="true" href="javascript:;" onclick="selectcliente(this)" data-id="' + json[i].id + '">' + json[i].name + '</li>';
+                        }
+
+                        $('.searchresultscliente').html(html);
+                        $('.searchresultscliente').show();
+                    }
+                });
+            }
+
+        });
+
+
+
     });
+
+    function selectcliente(obj) {
+        var id = $(obj).attr('data-id');
+        var name = $(obj).html();
+
+        $(".span-cliente").css("border-color", "#09a916");
+        $('.searchresultscliente').hide();
+        $('#cliente').val(name);
+        $('#id_cliente').val(id);
+    }
+
+    function add_cliente(obj) {
+        var name = $('#cliente').val();
+
+        if (name != '') {
+
+            swal({
+                    title: "Tem certeza",
+                    text: "Você esta adicionando um cliente: " + name,
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+
+                            url: BASE_URL + 'ajax/add_cliente',
+                            type: 'POST',
+                            data: {
+                                name: name
+                            },
+                            dataType: 'json',
+                            success: function(json) {
+                                swal({
+                                    title: "Sucesso!",
+                                    text: "Cadastro efetuado com sucesso",
+                                    icon: "success",
+
+
+                                })
+                                $(".span-cliente").css("border-color", "#09a916");
+                                $('.searchresultscliente').hide();
+                                console.log(json);
+                                $('#id_cliente').val(json.id);
+
+                            },
+                            error: function(data) {
+                                swal({
+                                    title: "Oops!!",
+                                    text: "Ja existe um cliente: " + name,
+                                    icon: "warning",
+
+
+                                })
+                            }
+
+                        });
+                    } else {
+
+                    }
+                });
+        }
+    }
 </script>

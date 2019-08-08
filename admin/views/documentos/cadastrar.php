@@ -20,7 +20,7 @@
                                         </div>
                                         <div class="box-body" style="">
                                             <div class="col-md-6">
-                                            <div class="input-group">
+                                                <div class="input-group">
                                                     <input class="form-control" name="docs_nome" placeholder="Nome do Documento">
                                                     <div class="input-group-btn">
                                                         <div class="btn btn-default btn-file">

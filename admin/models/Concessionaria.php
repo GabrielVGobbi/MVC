@@ -202,8 +202,9 @@ class Concessionaria extends model
 		return $this->documentos_concessionaria;
 	}
 
-	public function add($id_company, $Parametros, $arquivos)
+	public function add($id_company, $Parametros)
 	{
+		
 		try {
 			$sql = $this->db->prepare("INSERT INTO concessionaria SET 
 					razao_social = :razao_social,
@@ -278,15 +279,15 @@ class Concessionaria extends model
 	public function setEtapas($Parametros, $id_concessionaria, $id_company)
 	{
 
-
 		if (isset($Parametros)) {
 			if (count($Parametros) > 0) {
-				for ($q = 0; $q < count($Parametros['etapas']); $q++) {
-					if ($Parametros['etapas'][$q] != '') {
-						$sql = $this->db->prepare("INSERT INTO etapa (etp_nome)
-							VALUES (:etapa_nome)
+				for ($q = 0; $q < count($Parametros['etapas']['nome_etapa']); $q++) {
+					if ($Parametros['etapas']['nome_etapa'][$q] != '') {
+						$sql = $this->db->prepare("INSERT INTO etapa (etp_nome, prazo_etapa)
+							VALUES (:etapa_nome, :prazo_etapa)
 							");
-						$sql->bindValue(":etapa_nome", $Parametros['etapas'][$q]);
+						$sql->bindValue(":etapa_nome", $Parametros['etapas']['nome_etapa'][$q]);
+						$sql->bindValue(":prazo_etapa", $Parametros['etapas']['prazo_etapa'][$q]);
 
 						$sql->execute();
 
