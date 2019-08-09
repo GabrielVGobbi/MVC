@@ -162,4 +162,32 @@ class Servicos extends model
 
 		return $this->array;
 	}
+
+	public function add($Parametros, $id_company)
+	{
+		try {
+			$sql = $this->db->prepare("INSERT INTO servico SET 
+					id_company = :id_company,
+					sev_nome = :sev_nome
+			");
+
+			$sql->bindValue(":sev_nome", $Parametros['sev_nome']);
+			$sql->bindValue(":id_company", $id_company);
+
+
+			if ($sql->execute()) {
+				controller::alert('success', 'Excel Foi importado!!');
+	
+			} else {
+				controller::alert('error', 'Não foi possivel fazer o cadastro da obra, Contate o administrador do sistema!!');
+			}
+
+		} catch (PDOExecption $e) {
+			$sql->rollback();
+			error_log(print_r("Error!: " . $e->getMessage() . "</br>", 1));
+		}
+
+
+		return $this->retorno;
+	}
 }

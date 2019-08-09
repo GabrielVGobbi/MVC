@@ -44,7 +44,7 @@ class ClientesController extends controller
             }
 
             $this->dataInfo['tableDados'] = $this->cliente->getAll($this->filtro, $this->user->getCompany());
-            $this->dataInfo['getCount']   = $this->cliente->getCountCliente($this->user->getCompany());
+            $this->dataInfo['getCount']   = $this->cliente->getCount($this->user->getCompany());
             $this->dataInfo['p_count']    = ceil($this->dataInfo['getCount'] / 10);
 
 

@@ -8,7 +8,12 @@ class homeController extends controller {
 
 
         $this->user = new Users();
+        $this->concessionaria = new Concessionaria();
+        $this->servico = new Servicos();
+        $this->cliente = new Cliente();
         $this->obras = new Obras();
+
+
 
 
         $this->user->setLoggedUser();
@@ -33,64 +38,13 @@ class homeController extends controller {
     public function index() {
 
         $this->dataInfo['count_obras'] = $this->obras->getCount($this->user->getCompany());
+        $this->dataInfo['count_servico'] = $this->servico->getCount($this->user->getCompany());
+        $this->dataInfo['count_cliente'] = $this->cliente->getCount($this->user->getCompany());
+        $this->dataInfo['count_concessionaria'] = $this->concessionaria->getCount($this->user->getCompany());
+
+
 
         $this->loadTemplate($this->dataInfo['pageController']."/index", $this->dataInfo);
-    }
-
-    public function add_link() {
-
-        error_log(print_r($_GET,1));
-
-        /*if(!empty($_POST['server'])){
-            $location = explode('admin/', $_POST['server']);
-            header('Location:'.BASE_URL.$location[1]);
-            exit();
-
-        }else {
-            header('Location:'.BASE_URL.'link');
-            exit();
-        }*/
-
-
-    }
-
-    public function add() {
-
-        if(isset($_SESSION['formError']) && count($_SESSION['formError']) > 0){
-
-            $this->dataInfo['errorForm'] = $_SESSION['formError'];
-            unset($_SESSION['formError']);      
-        }
-
-        $this->loadTemplate($this->dataInfo['pageController']."/modalCadastro", $this->dataInfo);    
-    }
-
-    public function action() {
-        if(isset($_GET['id_link']) && $_GET['id_link'] != ''){
-            $result = $this->link->edit($this->user->getCompany(),$this->user->getId(),$_GET);
-        }else {
-            $result = $this->link->add($this->user->getCompany(),$this->user->getId(),$_GET);
-        }
-        $this->Validacao($result);
-
-        header('Location:'.BASE_URL.'home');
-        exit();
-    }
-
-    public function Validacao($result){
-
-        if(isset($result['link_add']['mensagem']['sucess'])){
-            $_SESSION['form']['success'] = 'Success';
-            $_SESSION['form']['type'] = 'success';
-            $_SESSION['form']['mensagem'] = "Link Cadastrado com Sucesso";
-        }else{
-            $_SESSION['form']['success'] = 'Oops!!';
-            $_SESSION['form']['type'] = 'error';
-            $_SESSION['form']['mensagem'] = "Não foi Possivel Editar o Link";
-        }
-        error_log(print_r($_SESSION['form'],1));
-        return $_SESSION['form'];
-
     }
 
 }

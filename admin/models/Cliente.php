@@ -267,14 +267,13 @@ class Cliente extends model
 		}
 	}
 
-	public function getCountCliente($id_company)
+	public function getCount($id_company)
 	{
 
 		$r = 0;
 
 		$sql = $this->db->prepare("SELECT COUNT(*) AS c FROM cliente WHERE id_company = :id_company");
 		$sql->bindValue(':id_company', $id_company);
-		/*$sql->bindValue(':id_user', $id_user);*/
 		$sql->execute();
 		$row = $sql->fetch();
 

@@ -44,19 +44,28 @@ class Obras extends model
 		);
 
 
-		if (!empty($filtro['razao_social'])) {
+		if (!empty($filtro['nome_obra'])) {
 
-			if ($filtro['razao_social'] != '') {
+			if ($filtro['nome_obra'] != '') {
 
-				$where[] = "sev.razao_social LIKE :razao_social";
+				$where[] = "obr.obr_razao_social LIKE :nome_obra";
 			}
 		}
+
+		if (!empty($filtro['cliente_nome'])) {
+
+			if ($filtro['cliente_nome'] != '') {
+
+				$where[] = "cle.cliente_nome LIKE :cliente_nome";
+			}
+		}
+
 
 		if (!empty($filtro['id'])) {
 
 			if ($filtro['id'] != '') {
 
-				$where[] = "sev.id = :id";
+				$where[] = "obr.id = :id";
 			}
 		}
 
@@ -66,9 +75,15 @@ class Obras extends model
 	private function bindWhere($filtro, &$sql)
 	{
 
-		if (!empty($filtro['razao_social'])) {
-			if ($filtro['razao_social'] != '') {
-				$sql->bindValue(":razao_social", '%' . $filtro['razao_social'] . '%');
+		if (!empty($filtro['nome_obra'])) {
+			if ($filtro['nome_obra'] != '') {
+				$sql->bindValue(":nome_obra", '%' . $filtro['nome_obra'] . '%');
+			}
+		}
+
+		if (!empty($filtro['cliente_nome'])) {
+			if ($filtro['cliente_nome'] != '') {
+				$sql->bindValue(":cliente_nome", '%' . $filtro['cliente_nome'] . '%');
 			}
 		}
 
@@ -84,7 +99,7 @@ class Obras extends model
 	{
 
 		$r = 0;
-		$sql = $this->db->prepare("SELECT COUNT(*) AS c FROM servico WHERE id_company = :id_company");
+		$sql = $this->db->prepare("SELECT COUNT(*) AS c FROM obra WHERE id_company = :id_company");
 		$sql->bindValue(':id_company', $id_company);
 		$sql->execute();	
 

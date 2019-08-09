@@ -100,7 +100,7 @@ class servicosController extends controller
     {
 
         if ($this->user->hasPermission('servico_view') && $this->user->hasPermission('servico_delete')) {
-            
+
             $result = $this->servico->delete($id, $this->user->getCompany());
 
             header("Location: " . BASE_URL . $this->dataInfo['pageController']);
@@ -112,7 +112,6 @@ class servicosController extends controller
                 $this->dataInfo['error'] = 'true';
                 $this->dataInfo['mensagem'] = "Não foi possivel excluir!";
             }
-
         } else {
             $this->loadViewError();
         }
@@ -135,5 +134,34 @@ class servicosController extends controller
         return $_SESSION['form'];
     }
 
-    
+    public function importar()
+    {
+
+        $Parametros = array();
+
+        if (!empty($_FILES['arquivo']['tmp_name'])) {
+
+            $arquivo = new DomDocument();
+            $arquivo->load($_FILES['arquivo']['tmp_name']);
+            $linhas = $arquivo->getElementsByTagName("Row");
+
+            $primeira_linha = true;
+
+            foreach ($linhas as $linha) {
+
+                if ($primeira_linha == false) {
+
+                    $Parametros['sev_nome']           = $linha->getElementsByTagName("Data")->item(0)->nodeValue;
+
+
+                    $this->servico->add($Parametros, $this->user->getCompany());
+                }
+
+                $primeira_linha = false;
+            }
+        }
+
+        header('Location:' . BASE_URL . 'servicos');
+        exit();
+    }
 }

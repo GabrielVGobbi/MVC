@@ -15,7 +15,7 @@ body {
 .table-danger,
 .table-danger>td,
 .table-danger>th {
-    background-color: #ffcfd4c2;
+    background-color: #b5b5b5c2;
 }
 
 .table-warning,
@@ -28,21 +28,6 @@ body {
     color: #fff;
     background: #00a65a;
     background-color: #00a65a;
-}
-
-.btn-app {
-    border-radius: 23px;
-    position: relative;
-    padding: 34px 34px;
-    margin: 2px 0 13px 10px;
-    min-width: 134px;
-    height: 110px;
-    width: 53%;
-    text-align: center;
-    color: #666;
-    border: 1px solid #ddd;
-    background-color: #f4f4f4;
-    font-size: 12px;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice {

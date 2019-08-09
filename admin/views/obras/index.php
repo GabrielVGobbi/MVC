@@ -25,28 +25,42 @@
 
 
 			<?php foreach ($tableDados as $obr) : ?>
-				<div class="col-md-6" style="margin-top:20px;">
-					<div class="box box-success">
-						<div class="box-header with-border">
-							<h3 class="box-title">Obra: <?php echo $obr[0]; ?> - <?php echo $obr['obr_razao_social']; ?></h3>
-						</div>
-						<div class="box-body">
-							<dl class="">
-								<dt>Description lists</dt>
-								<dd>A description list is perfect for defining terms.</dd>
-								<dt>Euismod</dt>
-								<dd>Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.</dd>
-								<dd>Donec id elit non mi porta gravida at eget metus.</dd>
-								<dt>Malesuada porta</dt>
-								<dd>Etiam porta sem malesuada magna mollis euismod.</dd>
-								<dt>Felis euismod semper eget lacinia</dt>
-								<dd>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo
-									sit amet risus.
-								</dd>
-							</dl>
+				<?php include("visualizar.php"); ?>
+				<a data-toggle="modal" data-target="#modalVisualizar<?php echo $obr[0]; ?>" style="color: #000;    cursor: pointer; ">
+					<div class="col-md-4" style="margin-top:20px;">
+						<div class="box box-success" style="    border-left: 1px solid;border-right: 1px solid;border-bottom: 1px solid;">
+							<div class="box box-widget widget-user">
+								<div class="widget-user-header bg-default-active">
+									<h3 class="widget-user-username">Obra: <?php echo $obr[0]; ?></h3>
+									<h4 class="widget-user-desc"><?php echo $obr['obr_razao_social']; ?></h4>
+								</div>
+
+								<div class="box-footer">
+									<div class="row">
+										<div class="col-sm-4 border-right">
+											<div class="description-block">
+												<h5 class="description-header">Serviço</h5>
+												<span class="description-text"><?php echo $obr['sev_nome']; ?></span>
+											</div>
+										</div>
+										<div class="col-sm-5 border-right">
+											<div class="description-block">
+												<h5 class="description-header">Concessionaria</h5>
+												<span class="description-text"><?php echo $obr['razao_social']; ?></span>
+											</div>
+										</div>
+										<div class="col-sm-3">
+											<div class="description-block">
+												<h5 class="description-header">Etapas</h5>
+												<span class="description-text"><?php echo $obr['id']; ?></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
+				</a>
 			<?php endforeach; ?>
 
 		</div>

@@ -15,8 +15,7 @@
 						</button>
 					<?php endif; ?>
 					<a href="<?php echo BASE_URL; ?>servicos" type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></a>
-
-
+					<a  data-toggle="modal" data-target="#modalImportar" class="btn btn-default btn-sm"><i class="fa fa-file-excel-o"></i></a>
 				</div>
 			</div>
 		</div>
@@ -78,3 +77,4 @@
 		</div>
 	</div>
 </div>
+<?php include("excel.php"); ?>
