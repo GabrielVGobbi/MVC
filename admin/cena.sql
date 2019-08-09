@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 08-Ago-2019 às 23:18
+-- Generation Time: 09-Ago-2019 às 21:24
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 7.2.12
 
@@ -410,7 +410,11 @@ INSERT INTO `servico` (`id`, `sev_nome`, `id_company`) VALUES
 (6, 'Pintura', 1),
 (7, 'Projeção', 1),
 (8, 'Construção', 1),
-(9, 'Manutenção', 1);
+(9, 'Manutenção', 1),
+(10, 'Pintura', 1),
+(11, 'Construçlões', 1),
+(12, 'Placa', 1),
+(13, 'Documento', 1);
 
 -- --------------------------------------------------------
 
@@ -593,13 +597,13 @@ ALTER TABLE `etapas_servico_concessionaria`
 -- AUTO_INCREMENT for table `notificacoes`
 --
 ALTER TABLE `notificacoes`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `obra`
 --
 ALTER TABLE `obra`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `permission_groups`
@@ -617,7 +621,7 @@ ALTER TABLE `permission_params`
 -- AUTO_INCREMENT for table `servico`
 --
 ALTER TABLE `servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `users`
