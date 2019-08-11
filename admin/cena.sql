@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
+<<<<<<< HEAD
 -- Generation Time: 09-Ago-2019 às 21:24
+=======
+-- Generation Time: 06-Ago-2019 às 15:21
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 7.2.12
 
@@ -21,6 +25,11 @@ SET time_zone = "+00:00";
 --
 -- Database: `cena`
 --
+<<<<<<< HEAD
+=======
+CREATE DATABASE IF NOT EXISTS `cena` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `cena`;
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 -- --------------------------------------------------------
 
@@ -44,6 +53,7 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id`, `id_company`, `cliente_nome`, `cliente_email`, `cliente_rg`, `cliente_cpf`, `clend_id`, `cliente_responsavel`) VALUES
+<<<<<<< HEAD
 (40, 1, 'Marcos Varella', 'marcos@marcos', NULL, NULL, NULL, 'josé'),
 (41, 1, 'Gabriel', '', '', '', NULL, NULL),
 (42, 1, 'Gabriel2', '', '', '', NULL, NULL),
@@ -51,6 +61,9 @@ INSERT INTO `cliente` (`id`, `id_company`, `cliente_nome`, `cliente_email`, `cli
 (44, 1, 'Luana', '', '', '', NULL, NULL),
 (45, 1, 'Nelly', '', '', '', NULL, NULL),
 (46, 1, 'Thiago', '', '', '', NULL, NULL);
+=======
+(40, 1, 'Marcos Varella', 'marcos@marcos', NULL, NULL, NULL, 'josé');
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 -- --------------------------------------------------------
 
@@ -113,11 +126,15 @@ CREATE TABLE `concessionaria` (
 
 INSERT INTO `concessionaria` (`id`, `razao_social`, `id_company`) VALUES
 (55, 'Enel', 1),
+<<<<<<< HEAD
 (56, 'Concessionaria 2', 1),
 (57, 'Eson', 1),
 (58, 'Eson', 1),
 (60, 'Enelson', 1),
 (61, 'Friboi', 1);
+=======
+(56, 'Concessionaria 2', 1);
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 -- --------------------------------------------------------
 
@@ -139,6 +156,7 @@ INSERT INTO `concessionaria_servico` (`id`, `id_concessionaria`, `id_servico`) V
 (75, 55, 6),
 (76, 55, 7),
 (77, 56, 8),
+<<<<<<< HEAD
 (78, 56, 7),
 (79, 57, 6),
 (80, 58, 6),
@@ -146,6 +164,9 @@ INSERT INTO `concessionaria_servico` (`id`, `id_concessionaria`, `id_servico`) V
 (82, 60, 6),
 (83, 61, 7),
 (84, 61, 8);
+=======
+(78, 56, 7);
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 -- --------------------------------------------------------
 
@@ -196,14 +217,19 @@ INSERT INTO `documentos_concessionaria` (`id`, `id_documento`, `id_concessionari
 
 CREATE TABLE `etapa` (
   `id` int(11) NOT NULL,
+<<<<<<< HEAD
   `etp_nome` varchar(255) DEFAULT NULL,
   `prazo_etapa` varchar(200) DEFAULT NULL
+=======
+  `etp_nome` varchar(255) DEFAULT NULL
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `etapa`
 --
 
+<<<<<<< HEAD
 INSERT INTO `etapa` (`id`, `etp_nome`, `prazo_etapa`) VALUES
 (40, 'Pintura Enel 1', NULL),
 (41, 'Pintura Enel 2', NULL),
@@ -229,6 +255,25 @@ INSERT INTO `etapa` (`id`, `etp_nome`, `prazo_etapa`) VALUES
 (61, 'Construção Friboi 1', '4'),
 (62, 'Construção Friboi 2', '4'),
 (63, 'Construção Friboi 3', '5');
+=======
+INSERT INTO `etapa` (`id`, `etp_nome`) VALUES
+(40, 'Pintura Enel 1'),
+(41, 'Pintura Enel 2'),
+(42, 'Pintura Enel 3'),
+(43, 'Pintura Enel 4'),
+(44, 'Pintura Enel 5'),
+(45, 'Projeção Enel 1'),
+(46, 'Projeção Enel 2'),
+(47, 'Projeção Enel 3'),
+(48, 'Projeção Enel 4'),
+(49, 'Projeção Enel 5'),
+(50, 'Construção 1'),
+(51, 'Construção 2'),
+(52, 'Construção 3'),
+(53, 'Projeção 1'),
+(54, 'Projeção 2'),
+(55, 'Projeção 3');
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 -- --------------------------------------------------------
 
@@ -263,6 +308,7 @@ INSERT INTO `etapas_servico_concessionaria` (`id`, `id_concessionaria`, `id_serv
 (49, 56, 8, 52),
 (50, 56, 7, 53),
 (51, 56, 7, 54),
+<<<<<<< HEAD
 (52, 56, 7, 55),
 (53, 58, 6, 56),
 (54, 60, 6, 57),
@@ -297,6 +343,9 @@ CREATE TABLE `notificacoes` (
 INSERT INTO `notificacoes` (`id`, `id_user`, `data_notificacao`, `notificacao_tipo`, `propriedades`, `lido`, `link`, `id_company`) VALUES
 (2, 1, NULL, 'PENDENÇA', '{\"msg\":\"Notificacao de teste\"}', 1, 'laskjrlkajsr', 1),
 (3, 1, NULL, 'URGENCIA', '{\"msg\":\"Obra 55 do cliente: Marcos, pendente\"}', 1, 'alsrjklasjrljasr', 1);
+=======
+(52, 56, 7, 55);
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 -- --------------------------------------------------------
 
@@ -318,12 +367,16 @@ CREATE TABLE `obra` (
 --
 
 INSERT INTO `obra` (`id`, `id_company`, `id_servico`, `id_cliente`, `id_concessionaria`, `obr_razao_social`) VALUES
+<<<<<<< HEAD
 (1, 1, 6, 40, 52, 'Casa Marcos'),
 (2, 1, 6, 40, 55, 'Casa Marcos'),
 (3, 1, 6, 0, 55, 'Casa Gabriel'),
 (4, 1, 6, 41, 55, 'Casa Gabriel'),
 (5, 1, 6, 44, 60, 'Casa Luana'),
 (6, 1, 7, 45, 61, 'Casa Nelly');
+=======
+(1, 1, 6, 40, 52, 'Casa Marcos');
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 -- --------------------------------------------------------
 
@@ -410,11 +463,15 @@ INSERT INTO `servico` (`id`, `sev_nome`, `id_company`) VALUES
 (6, 'Pintura', 1),
 (7, 'Projeção', 1),
 (8, 'Construção', 1),
+<<<<<<< HEAD
 (9, 'Manutenção', 1),
 (10, 'Pintura', 1),
 (11, 'Construçlões', 1),
 (12, 'Placa', 1),
 (13, 'Documento', 1);
+=======
+(9, 'Manutenção', 1);
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 -- --------------------------------------------------------
 
@@ -504,12 +561,15 @@ ALTER TABLE `etapas_servico_concessionaria`
   ADD PRIMARY KEY (`id`);
 
 --
+<<<<<<< HEAD
 -- Indexes for table `notificacoes`
 --
 ALTER TABLE `notificacoes`
   ADD PRIMARY KEY (`id`);
 
 --
+=======
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 -- Indexes for table `obra`
 --
 ALTER TABLE `obra`
@@ -549,7 +609,11 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 --
 -- AUTO_INCREMENT for table `cliente_endereco`
@@ -561,13 +625,21 @@ ALTER TABLE `cliente_endereco`
 -- AUTO_INCREMENT for table `concessionaria`
 --
 ALTER TABLE `concessionaria`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 --
 -- AUTO_INCREMENT for table `concessionaria_servico`
 --
 ALTER TABLE `concessionaria_servico`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 --
 -- AUTO_INCREMENT for table `documentos`
@@ -585,12 +657,17 @@ ALTER TABLE `documentos_concessionaria`
 -- AUTO_INCREMENT for table `etapa`
 --
 ALTER TABLE `etapa`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 --
 -- AUTO_INCREMENT for table `etapas_servico_concessionaria`
 --
 ALTER TABLE `etapas_servico_concessionaria`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
@@ -598,12 +675,19 @@ ALTER TABLE `etapas_servico_concessionaria`
 --
 ALTER TABLE `notificacoes`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 --
 -- AUTO_INCREMENT for table `obra`
 --
 ALTER TABLE `obra`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 --
 -- AUTO_INCREMENT for table `permission_groups`
@@ -621,7 +705,11 @@ ALTER TABLE `permission_params`
 -- AUTO_INCREMENT for table `servico`
 --
 ALTER TABLE `servico`
+<<<<<<< HEAD
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+=======
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+>>>>>>> d1c24fb1cec75a61980620aee874c41306017c44
 
 --
 -- AUTO_INCREMENT for table `users`
