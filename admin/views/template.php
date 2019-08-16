@@ -41,27 +41,27 @@
           <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
             <ul class="nav navbar-nav">
               <?php if ($this->userInfo['user']->hasPermission('user_view')) : ?>
-                <li class="active"><a href="<?php echo BASE_URL; ?>usuario">Usuarios <span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="<?php echo BASE_URL; ?>usuario">Usuarios <span class="sr-only">(current)</span></a></li>
               <?php endif; ?>
 
               <?php if ($this->userInfo['user']->hasPermission('cliente_view')) : ?>
-                <li class="active"><a href="<?php echo BASE_URL; ?>clientes">Clientes <span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="<?php echo BASE_URL; ?>clientes">Clientes <span class="sr-only">(current)</span></a></li>
               <?php endif; ?>
 
               <?php if ($this->userInfo['user']->hasPermission('servico_view')) : ?>
-                <li class="active"><a href="<?php echo BASE_URL; ?>obras">Obras <span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="<?php echo BASE_URL; ?>obras">Obras <span class="sr-only">(current)</span></a></li>
               <?php endif; ?>
 
               <?php if ($this->userInfo['user']->hasPermission('concessionaria_view')) : ?>
-                <li class="active"><a href="<?php echo BASE_URL; ?>concessionarias">Concessionarias <span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="<?php echo BASE_URL; ?>concessionarias">Concessionarias <span class="sr-only">(current)</span></a></li>
               <?php endif; ?>
 
               <?php if ($this->userInfo['user']->hasPermission('servico_view')) : ?>
-                <li class="active"><a href="<?php echo BASE_URL; ?>servicos">Serviços <span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="<?php echo BASE_URL; ?>servicos">Serviços <span class="sr-only">(current)</span></a></li>
               <?php endif; ?>
 
               <?php if ($this->userInfo['user']->hasPermission('documento_view')) : ?>
-                <li class="active"><a href="<?php echo BASE_URL; ?>documentos">Documentos <span class="sr-only">(current)</span></a></li>
+              <li class="active"><a href="<?php echo BASE_URL; ?>documentos">Documentos <span class="sr-only">(current)</span></a></li>
               <?php endif; ?>
 
 
@@ -69,6 +69,8 @@
             </ul>
 
           </div>
+
+          <?php if ($this->userInfo['user']->usr_info() != 'cliente') : ?>
           <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
               <li class="dropdown messages-menu">
@@ -80,21 +82,21 @@
                   <li class="header notificacao-mensagem-header"></li>
                   <li>
                     <ul class="menu">
-                      <?php 
-                        foreach ($this->userInfo['notificacao'] as $not) : 
-                        $propriedades = json_decode($not['propriedades']);
+                      <?php
+                        foreach ($this->userInfo['notificacao'] as $not) :
+                          $propriedades = json_decode($not['propriedades']);
 
-                        
-                        ?>
-                        <li>
-                          <a href="#">
-                            <h4>
-                              <?php echo $not['notificacao_tipo']; ?>
-                              <small><i class="fa fa-clock-o"></i> 2 mins</small>
-                            </h4>
-                            <p><?php echo $propriedades->msg; ?></p>
-                          </a>
-                        </li>
+
+                          ?>
+                      <li>
+                        <a href="#">
+                          <h4>
+                            <?php echo $not['notificacao_tipo']; ?>
+                            <small><i class="fa fa-clock-o"></i> 2 mins</small>
+                          </h4>
+                          <p><?php echo $propriedades->msg; ?></p>
+                        </a>
+                      </li>
                       <?php endforeach; ?>
                     </ul>
                   </li>
@@ -174,8 +176,66 @@
 
             </ul>
           </div>
+          <?php else : ?>
+
+                          
+
+          <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+             
+
+              <!-- User Account Menu -->
+              <li class="dropdown user user-menu">
+                <!-- Menu Toggle Button -->
+                <a href="/admin/login/logout">
+                  <!-- The user image in the navbar-->
+                  <!-- <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image"> -->
+                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                  <span class="hidden-xs"> <?php echo ucfirst($this->userInfo['userName']['login']); ?></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <!-- The user image in the menu -->
+                  <li class="user-header">
+                    <!-- <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"> -->
+
+                    <p>
+                      <?php echo $this->userInfo['userName']['login']; ?>
+                      <small>Member since Nov. 2012</small>
+                    </p>
+                  </li>
+                  <!-- Menu Body -->
+                  <li class="user-body">
+                    <div class="row">
+                      <div class="col-xs-4 text-center">
+                        <a href="#">Followers</a>
+                      </div>
+                      <div class="col-xs-4 text-center">
+                        <a href="#">Sales</a>
+                      </div>
+                      <div class="col-xs-4 text-center">
+                        <a href="#">Friends</a>
+                      </div>
+                    </div>
+                    <!-- /.row -->
+                  </li>
+                  <!-- Menu Footer-->
+                  <li class="user-footer">
+                    <div class="pull-left">
+                      <a href="#" class="btn btn-default btn-flat">Profile</a>
+                    </div>
+                    <div class="pull-right">
+                      <a href="<?php echo BASE_URL; ?>login/logout" class="btn btn-default btn-flat">Sign out</a>
+                    </div>
+                  </li>
+                </ul>
+              </li>
+
+            </ul>
+          </div>
+
+
+          <?php endif; ?>
         </div>
-        <!-- /.container-fluid -->
       </nav>
     </header>
     <!-- Full Width Column -->
@@ -194,16 +254,16 @@
         <section class="content">
 
           <?php if (isset($_SESSION['alert'])) : ?>
-            <div class="goaway" id="goaway">
-              <div class="center">
-                <div class="alert alert-<?php echo $_SESSION['alert']['tipo']; ?> alert-dismissible">
-                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                  <h4><i class="icon fa fa-check"></i> Alert!</h4>
-                  <?php echo $_SESSION['alert']['mensagem']; ?>
-                </div>
+          <div class="goaway" id="goaway">
+            <div class="center">
+              <div class="alert alert-<?php echo $_SESSION['alert']['tipo']; ?> alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"></i> Alert!</h4>
+                <?php echo $_SESSION['alert']['mensagem']; ?>
               </div>
             </div>
-            <?php unset($_SESSION['alert']); ?>
+          </div>
+          <?php unset($_SESSION['alert']); ?>
 
           <?php endif; ?>
           <?php $this->loadViewInTemplate($viewName, $viewData); ?>
@@ -254,8 +314,8 @@
     }
 
     $(function() {
-      setInterval(verificarNotificacao, 2000);
-      verificarNotificacao();
+      setInterval(verificarNotificacao, 20000);
+      //verificarNotificacao();
 
       $('.notificacoes').on('click', function() {
 
@@ -295,24 +355,24 @@
   </script>
 
   <?php if (isset($_SESSION['form'])) : ?>
-    <script type="text/javascript">
-      var title = '<?php echo $_SESSION['form']['success']; ?>';
-      var text = '<?php echo $_SESSION['form']['mensagem']; ?>';
-      var icon = '<?php echo $_SESSION['form']['type']; ?>';
-      var pageController = '<?php echo $viewData['pageController']; ?>';
+  <script type="text/javascript">
+    var title = '<?php echo $_SESSION['form']['success']; ?>';
+    var text = '<?php echo $_SESSION['form']['mensagem']; ?>';
+    var icon = '<?php echo $_SESSION['form']['type']; ?>';
+    var pageController = '<?php echo $viewData['pageController']; ?>';
 
-      swal({
-          title: title,
-          text: text,
-          icon: icon,
-          buttons: 'OK',
-        })
-        .then((value) => {
+    swal({
+        title: title,
+        text: text,
+        icon: icon,
+        buttons: 'OK',
+      })
+      .then((value) => {
 
-          <?php unset($_SESSION['form']); ?>
-          /*window.location.href = BASE_URL+pageController;*/
-        });
-    </script>
+        <?php unset($_SESSION['form']); ?>
+        /*window.location.href = BASE_URL+pageController;*/
+      });
+  </script>
 
   <?php endif; ?>
 

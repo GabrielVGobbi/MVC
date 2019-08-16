@@ -170,53 +170,104 @@ class Cliente extends model
 
 		$cliente_nome = controller::ReturnValor($Parametros['cliente_nome']);
 		$cliente_email = strtolower($Parametros['email']);
-		$cliente_rg = controller::ReturnFormatLimpo($Parametros['rg']);
-		$cliente_cpf = controller::ReturnFormatLimpo($Parametros['cpf']);
 
 		if (isset($Parametros['id_cliente']) && $Parametros['id_cliente'] != '') {
 
 			$sql = $this->db->prepare("UPDATE cliente SET 
 				cliente_nome = :cliente_nome, 
-				cliente_email = :cliente_email,
-				cliente_rg = :cliente_rg,
-				cliente_cpf = :cliente_cpf
-
+				cliente_email = :cliente_email
 				WHERE id_cliente = :id_cliente
         	");
 
 			$sql->bindValue(":cliente_nome", $cliente_nome);
-			$sql->bindValue(":cliente_rg", $cliente_rg);
-			$sql->bindValue(":cliente_cpf", $cliente_cpf);
 			$sql->bindValue(":cliente_email", $cliente_email);
 			$sql->bindValue(":id_cliente", $Parametros['id_cliente']);
 			$sql->execute();
 		}
+	}
 
-		if (isset($Parametros['id_endereco']) && $Parametros['id_endereco'] != '') {
+	public function addAcessoCliente($Parametros, $id_company)
+	{
 
-			$sql = $this->db->prepare("UPDATE cliente_endereco SET 
-					rua = :rua, 
-            		numero = :numero,
-            		cidade = :cidade,
-            		bairro = :bairro,
-            		estado = :estado,
-					cep = :cep
 
-					WHERE id_endereco = :id_endereco
-			");
+		$login = lcfirst($Parametros['login']);
+		$pass  = ($Parametros['password']);
 
-			$sql->bindValue(":rua", $Parametros['rua']);
-			$sql->bindValue(":numero", $Parametros['numero']);
-			$sql->bindValue(":cidade", $Parametros['cidade']);
-			$sql->bindValue(":bairro", $Parametros['bairro']);
-			$sql->bindValue(":estado", $Parametros['estado']);
-			$sql->bindValue(":cep", $Parametros['cep']);
-			$sql->bindValue(":id_endereco", $Parametros['id_endereco']);
-			$sql->execute();
-		} else {
-			
-			$this->updateEnderecoCliente($Parametros);
-		}
+		$sql = $this->db->prepare("INSERT INTO users SET 
+            			login = :login,
+            			id_company = :id_company,
+						password = :password,
+						usr_info = :cliente,
+						id_cliente = :id_cliente	
+        			");
+
+		$sql->bindValue(":login", $login);
+		$sql->bindValue(":password", md5($pass));
+		$sql->bindValue(":id_company", $id_company);
+		$sql->bindValue(":cliente", 'cliente');
+		$sql->bindValue(":id_cliente", $Parametros['id']);
+
+
+
+		$sql->execute();
+
+		$sql = $this->db->prepare("UPDATE cliente SET 
+				acesso = :acesso,
+				acesso_criado = :acesso_criado
+
+				WHERE id = :id_cliente
+        	");
+
+		$sql->bindValue(":id_cliente", $Parametros['id']);
+		$sql->bindValue(":acesso", '1');
+		$sql->bindValue(":acesso_criado", '1');
+
+		$sql->execute();
+
+
+		return $id = $this->db->lastInsertId();
+	}
+
+	public function desativar($id_cliente, $id_company)
+	{
+
+
+		$sql = $this->db->prepare("UPDATE cliente SET 
+				acesso = :acesso
+
+				WHERE id = :id_cliente
+        	");
+
+		$sql->bindValue(":id_cliente", $id_cliente);
+		$sql->bindValue(":acesso", '0');
+		$sql->execute();
+
+
+		$sql = $this->db->prepare("UPDATE users SET usu_ativo = 0 WHERE id_cliente = :id AND id_company = :id_company");
+		$sql->bindValue(":id", $id_cliente);
+		$sql->bindValue(":id_company", $id_company);
+		$sql->execute();
+	}
+
+	public function ativar($id_cliente, $id_company)
+	{
+
+
+		$sql = $this->db->prepare("UPDATE cliente SET 
+				acesso = :acesso
+
+				WHERE id = :id_cliente
+        	");
+
+		$sql->bindValue(":id_cliente", $id_cliente);
+		$sql->bindValue(":acesso", '1');
+		$sql->execute();
+
+
+		$sql = $this->db->prepare("UPDATE users SET usu_ativo = 1 WHERE id_cliente = :id AND id_company = :id_company");
+		$sql->bindValue(":id", $id_cliente);
+		$sql->bindValue(":id_company", $id_company);
+		$sql->execute();
 	}
 
 	public function updateEnderecoCliente($Parametros)
@@ -300,14 +351,15 @@ class Cliente extends model
 		return $this->array;
 	}
 
-	public function searchClienteByName($var, $id_company){
+	public function searchClienteByName($var, $id_company)
+	{
 
 		$sql = $this->db->prepare("
 			SELECT * FROM cliente
 			WHERE id_company = :id_company AND cliente_nome like :cliente_nome
 		");
 
-		$sql->bindValue(':cliente_nome', '%'.$var.'%');
+		$sql->bindValue(':cliente_nome', '%' . $var . '%');
 		$sql->bindValue(':id_company', $id_company);
 		$sql->execute();
 
@@ -316,6 +368,5 @@ class Cliente extends model
 		}
 
 		return $this->array;
-
 	}
 }

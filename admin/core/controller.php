@@ -1,10 +1,12 @@
 <?php
-class controller {
+class controller
+{
 
 	protected $db;
 	private $userInfo;
 
-	public function __construct() {
+	public function __construct()
+	{
 
 
 		$u = new Users;
@@ -15,40 +17,39 @@ class controller {
 			'user'			=> $u,
 			'notificacao'   => $u->getNotificacao($u->getId(), $u->getCompany())
 		);
-
-		
-
-
 	}
-	
-	public function loadView($viewName, $viewData = array()) {
+
+	public function loadView($viewName, $viewData = array())
+	{
 		extract($viewData);
-		include 'views/'.$viewName.'.php';
+		include 'views/' . $viewName . '.php';
 	}
 
-	public function loadTemplate($viewName, $viewData = array()) {
+	public function loadTemplate($viewName, $viewData = array())
+	{
 		extract($viewData);
 
 		include 'views/template.php';
-
 	}
-	
-	public function loadViewInTemplate($viewName, $viewData) {
+
+	public function loadViewInTemplate($viewName, $viewData)
+	{
 		extract($viewData);
-		include 'views/'.$viewName.'.php';
+		include 'views/' . $viewName . '.php';
 	}
 
-	public function loadViewError() {
+	public function loadViewError()
+	{
 		include 'views/notAutorized/404.php';
 	}
 
-	public function alert($tipo,$mensagem){
-		
-			$_SESSION['alert']['mensagem'] = $mensagem;
-			$_SESSION['alert']['tipo'] = $tipo;
-					
-			return $_SESSION['alert'];		
-		
+	public function alert($tipo, $mensagem)
+	{
+
+		$_SESSION['alert']['mensagem'] = $mensagem;
+		$_SESSION['alert']['tipo'] = $tipo;
+
+		return $_SESSION['alert'];
 	}
 
 	public static function ReturnValor($valor)
@@ -78,6 +79,7 @@ class controller {
 		$valor = str_replace(' ', '', $valor);
 		$valor = str_replace('-', '', $valor);
 		$valor = str_replace('.', '', $valor);
+		$valor = str_replace('/', '', $valor);
 
 		return $valor;
 	}
@@ -101,5 +103,12 @@ class controller {
 		return $mobile;
 	}
 
-
+	public  static function SomarData($data, $dias, $meses = 0, $ano = 0)
+	{
+		//passe a data no formato dd-mm-yyyy
+		//yyyy-mm-dd
+		$data = explode("-", $data);
+		$newData = date("d-m-Y", mktime(0, 0, 0, $data[1] + $meses, $data[0] + $dias, $data[2] + $ano));
+		return $newData;
+	}
 }

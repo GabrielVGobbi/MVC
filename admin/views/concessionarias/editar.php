@@ -76,7 +76,7 @@
 												<h3 class="box-title title-etapas">Etapas</h3>
 											</div>
 											<div class="box-body">
-												<div class="col-md-10">
+												<div class="col-md-10"> 
 													<div class="form-group">
 														<label>Sub-Serviço</label>
 														<input type="text" class="form-control" name="etapas[nome_etapa][]" id="etapas[]" autocomplete="off">

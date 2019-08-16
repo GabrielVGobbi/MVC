@@ -28,12 +28,22 @@ class servicosController extends controller
     {
 
         if ($this->user->hasPermission('servico_view')) {
+            
+            $this->dataInfo['p'] = 1;
+			if (isset($_GET['p']) && !empty($_GET['p'])) {
+				$this->dataInfo['p'] = intval($_GET['p']);
+				if ($this->dataInfo['p'] == 0) {
+					$this->dataInfo['p'] = 1;
+				}
+            }
 
             if (isset($_GET['filtros'])) {
                 $this->filtro = $_GET['filtros'];
             }
 
-            $this->dataInfo['tableDados'] = $this->servico->getAll($this->filtro, $this->user->getCompany());
+            $offset = (10 * ($this->dataInfo['p'] - 1));
+
+            $this->dataInfo['tableDados'] = $this->servico->getAll($offset,$this->filtro, $this->user->getCompany());
             $this->dataInfo['getCount']   = $this->servico->getCount($this->user->getCompany());
             $this->dataInfo['p_count']    = ceil($this->dataInfo['getCount'] / 10);
 

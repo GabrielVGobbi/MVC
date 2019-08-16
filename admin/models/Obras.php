@@ -21,8 +21,9 @@ class Obras extends model
 			obra obr
 			INNER JOIN servico sev ON(obr.id_servico = sev.id)
 			INNER JOIN cliente cle ON(cle.id = obr.id_cliente)
-			INNER JOIN concessionaria con ON(con.id = obr.id_concessionaria)		
-		WHERE " . implode(' AND ', $where);
+			INNER JOIN concessionaria con ON(con.id = obr.id_concessionaria)
+			LEFT JOIN obra_etapa obtp ON (obr.id = obtp.id_obra)		
+		WHERE " . implode(' AND ', $where) . " GROUP BY obr.id";
 
 		$sql = $this->db->prepare($sql);
 
@@ -37,13 +38,42 @@ class Obras extends model
 		return $this->array;
 	}
 
-	private function buildWhere($filtro, $id)
+	public function getObraCliente($id_cliente, $filtro, $id_company)
+	{
+
+		$where = $this->buildWhere( $filtro, $id_company, $id_cliente);
+
+		$sql = "
+		SELECT * FROM  
+			obra obr
+			INNER JOIN servico sev ON(obr.id_servico = sev.id)
+			INNER JOIN cliente cle ON(cle.id = obr.id_cliente)
+			INNER JOIN concessionaria con ON(con.id = obr.id_concessionaria)
+			LEFT JOIN obra_etapa obtp ON (obr.id = obtp.id_obra)		
+		WHERE " . implode(' AND ', $where) . " GROUP BY obr.id";
+
+		$sql = $this->db->prepare($sql);
+
+		$this->bindWhere($filtro, $sql);
+
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$this->array = $sql->fetchAll();
+		}
+
+		return $this->array;
+	}
+
+	private function buildWhere($filtro, $id,$id_cliente = 0)
 	{
 		$where = array(
 			'obr.id_company=' . $id
 		);
 
-
+		if($id_cliente != 0){
+			$where[] = 'obr.id_cliente='. $id_cliente;
+		}
 		if (!empty($filtro['nome_obra'])) {
 
 			if ($filtro['nome_obra'] != '') {
@@ -101,7 +131,7 @@ class Obras extends model
 		$r = 0;
 		$sql = $this->db->prepare("SELECT COUNT(*) AS c FROM obra WHERE id_company = :id_company");
 		$sql->bindValue(':id_company', $id_company);
-		$sql->execute();	
+		$sql->execute();
 
 		if ($sql->rowCount() > 0) {
 			$row = $sql->fetch();
@@ -139,7 +169,6 @@ class Obras extends model
 		$sql->bindValue(":id_company", $id_company);
 		if ($sql->execute()) {
 			controller::alert('danger', 'servico deletado com sucesso!!');
-
 		} else {
 			controller::alert('error', 'Usuario desativado com sucesso!!');
 		}
@@ -147,13 +176,18 @@ class Obras extends model
 
 	public function add($Parametros, $id_company)
 	{
+
+
+		$date = strftime('%d-%m-%Y', strtotime('today'));
+		$data = ucwords($date);
 		try {
 			$sql = $this->db->prepare("INSERT INTO obra SET 
 					id_company = :id_company,
 					id_servico = :id_servico,
 					id_cliente = :id_cliente,
 					id_concessionaria = :id_concessionaria,
-					obr_razao_social = :razao_social
+					obr_razao_social = :razao_social,
+					data_obra 		= :data_obra
 
 			
 			");
@@ -161,20 +195,40 @@ class Obras extends model
 			$sql->bindValue(":razao_social", $Parametros['obra_nome']);
 			$sql->bindValue(":id_servico", $Parametros['servico']);
 			$sql->bindValue(":id_cliente", $Parametros['id_cliente']);
+			$sql->bindValue(":data_obra", $data);
 			$sql->bindValue(":id_concessionaria", $Parametros['concessionaria']);
+
 			$sql->bindValue(":id_company", $id_company);
 
 
 			if ($sql->execute()) {
 				controller::alert('success', 'Obra criado com sucesso!!');
-	
 			} else {
 				controller::alert('error', 'Não foi possivel fazer o cadastro da obra, Contate o administrador do sistema!!');
 			}
 
-			$id = $this->db->lastInsertId();
+			$id_obra = $this->db->lastInsertId();
 
+			$this->servico = new Servicos();
+			$etapas = $this->servico->getEtapas($Parametros['concessionaria'], $Parametros['servico']);
 
+			if (isset($etapas)) {
+				if (count($etapas) > 0) {
+					for ($q = 0; $q < count($etapas); $q++) {
+
+						$sql = $this->db->prepare("INSERT INTO obra_etapa (id_obra, id_etapa)
+							VALUES (:id_obra, :id_etapa)
+							");
+						$sql->bindValue(":id_etapa", $etapas[$q]['id_etapa']);
+						$sql->bindValue(":id_obra", $id_obra);
+
+						$sql->execute();
+					}
+				}
+			} else {
+
+				error_log(print_r('erro', 1));
+			}
 		} catch (PDOExecption $e) {
 			$sql->rollback();
 			error_log(print_r("Error!: " . $e->getMessage() . "</br>", 1));
@@ -182,5 +236,81 @@ class Obras extends model
 
 
 		return $this->retorno;
+	}
+
+	public function getEtapas($id_obra)
+	{
+
+		$sql = "SELECT * FROM  
+			obra_etapa obrt
+			INNER JOIN etapa etp ON (obrt.id_etapa = etp.id)
+		WHERE id_obra = :id_obra";
+
+		$sql = $this->db->prepare($sql);
+		$sql->bindValue(":id_obra", $id_obra);
+
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$this->array = $sql->fetchAll();
+		}
+
+		return $this->array;
+	}
+
+	public function getEtapasConcluidas($id_obra)
+	{
+
+		$r = 0;
+		$sql = $this->db->prepare("SELECT COUNT(*) AS c FROM obra_etapa obrt WHERE (id_obra = :id_obra) AND (obrt.check = '1')");
+		$sql->bindValue(':id_obra', $id_obra);
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$row = $sql->fetch();
+		}
+
+		$r = $row['c'];
+
+		return $r;
+	}
+
+	public function edit($Parametros)
+	{
+	
+
+		if (isset($Parametros['id_obra']) && $Parametros['id_obra'] != '') {
+
+			$sql = $this->db->prepare("UPDATE obra SET 
+				obr_razao_social = :obra_nome
+				
+				WHERE id = :id_obra
+        	");
+
+			$sql->bindValue(":obra_nome", $Parametros['obra_nome']);
+			$sql->bindValue(":id_obra", $Parametros['id_obra']);
+			$sql->execute();
+
+			if (isset($Parametros['check'])) {
+				if (count($Parametros['check']) > 0) {
+					for ($q = 0; $q < count($Parametros['check']); $q++) {
+
+						$sql = $this->db->prepare("UPDATE obra_etapa obr SET
+							obr.check = '1' 
+				
+							WHERE id_obra = :id_obra AND id_etapa = :id_etapa
+							");
+						$sql->bindValue(":id_etapa", $Parametros['check'][$q]);
+						$sql->bindValue(":id_obra", $Parametros['id_obra']);
+
+						$sql->execute();
+					}
+				}
+			} else {
+
+				error_log(print_r('erro', 1));
+			}
+
+		}
 	}
 }

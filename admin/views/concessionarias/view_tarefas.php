@@ -16,15 +16,13 @@
                                 <span class="text"><?php echo $etp['etp_nome']; ?></span>
                                 <small class="label label-danger"><i class="fa fa-clock-o"> </i><?php echo ' '.$etp['prazo_etapa']; ?> dias </small>
                                 <div class="tools">
-                                    <i class="fa fa-edit"></i>
-                                    <i class="fa fa-trash-o"></i>
+                                 
                                 </div>
                             </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
                 <div class="box-footer clearfix no-border">
-                    <button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
                 </div>
             </div>
         </div>

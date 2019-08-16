@@ -164,6 +164,15 @@ $(function() {
 
     });
 
+    $('.new_obra').on('click', function(e) {
+
+        $('#new_obra').toggle();
+        $('#obra_ok').toggle();
+
+        $('.file_doc').attr('name','documento_arquivo');
+
+    });
+
 
     $('.service_add').on('change', function(e) {
 
@@ -209,4 +218,9 @@ function add_service(obj) {
 
             });
     }
+}
+
+function darAcessoCliente(id){
+
+    $('#acessoUsuario'+id).modal('toggle');
 }

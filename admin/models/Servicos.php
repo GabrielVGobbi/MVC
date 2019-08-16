@@ -11,14 +11,14 @@ class Servicos extends model
 	}
 
 	//selecionar todos
-	public function getAll($filtro, $id_company)
+	public function getAll($offset, $filtro, $id_company)
 	{
 
 		$where = $this->buildWhere($filtro, $id_company);
 
 		$sql = "SELECT * FROM  
 			servico sev		
-		WHERE " . implode(' AND ', $where);
+		WHERE " . implode(' AND ', $where) . " LIMIT $offset, 10";
 
 		$sql = $this->db->prepare($sql);
 
@@ -82,7 +82,7 @@ class Servicos extends model
 		$r = 0;
 		$sql = $this->db->prepare("SELECT COUNT(*) AS c FROM servico WHERE id_company = :id_company");
 		$sql->bindValue(':id_company', $id_company);
-		$sql->execute();	
+		$sql->execute();
 
 		if ($sql->rowCount() > 0) {
 			$row = $sql->fetch();
@@ -120,7 +120,6 @@ class Servicos extends model
 		$sql->bindValue(":id_company", $id_company);
 		if ($sql->execute()) {
 			controller::alert('danger', 'servico deletado com sucesso!!');
-
 		} else {
 			controller::alert('error', 'Usuario desativado com sucesso!!');
 		}
@@ -177,11 +176,9 @@ class Servicos extends model
 
 			if ($sql->execute()) {
 				controller::alert('success', 'Excel Foi importado!!');
-	
 			} else {
 				controller::alert('error', 'Não foi possivel fazer o cadastro da obra, Contate o administrador do sistema!!');
 			}
-
 		} catch (PDOExecption $e) {
 			$sql->rollback();
 			error_log(print_r("Error!: " . $e->getMessage() . "</br>", 1));
@@ -189,5 +186,30 @@ class Servicos extends model
 
 
 		return $this->retorno;
+	}
+
+	public function updateEtapa($Parametros)
+	{
+
+		error_log(print_r($Parametros,1));
+		if($Parametros['checked'] == 1){
+			$check = 1;
+		}else {
+			$check = 0;
+		}
+
+		$sql = $this->db->prepare("UPDATE obra_etapa obr SET
+
+			obr.check          	= :checked
+
+		WHERE (id_etapa = :id) AND (id_obra = :id_obra)
+
+	");
+
+		$sql->bindValue(':checked',   $check);
+		$sql->bindValue(':id',   $Parametros['id_etapa']);
+		$sql->bindValue(':id_obra',   $Parametros['id_obra']);
+
+		$sql->execute();
 	}
 }

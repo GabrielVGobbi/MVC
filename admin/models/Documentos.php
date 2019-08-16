@@ -93,33 +93,47 @@ class Documentos extends model
 		return $r;
 	}
 
-	public function add($arquivos, $id_company)
+	public function add($arquivos, $id_company, $id = 0)
 	{
-		$tmpname =  $arquivos['documento_arquivo']['name'];
+
+		
+		
+			$tmpname =  $arquivos['documento_arquivo']['name'];
 
 
-		if (is_dir("assets/documentos/")) {
-			$subiu = move_uploaded_file($arquivos['documento_arquivo']['tmp_name'], 'assets/documentos/' . '/' . $arquivos['documento_arquivo']['name']);
-		} else {
-			mkdir("assets/documentos/");
-			$subiu = move_uploaded_file($arquivos['documento_arquivo']['tmp_name'], 'assets/documentos/' . '/' . $arquivos['documento_arquivo']['name']);
-		}
+			if (is_dir("assets/documentos/")) {
+				$subiu = move_uploaded_file($arquivos['documento_arquivo']['tmp_name'], 'assets/documentos/' . '/' . $arquivos['documento_arquivo']['name']);
+			} else {
+				mkdir("assets/documentos/");
+				$subiu = move_uploaded_file($arquivos['documento_arquivo']['tmp_name'], 'assets/documentos/' . '/' . $arquivos['documento_arquivo']['name']);
+			}
 
 
-		try {
+			try {
 
 
-			$sql = $this->db->prepare("INSERT INTO documentos (docs_nome,id_company)
+				$sql = $this->db->prepare("INSERT INTO documentos (docs_nome,id_company)
 								VALUES (:nome_documento, :id_company)
 						");
 
-			$sql->bindValue(":nome_documento", $arquivos['documento_arquivo']['name']);
-			$sql->bindValue(":id_company", $id_company);
-			$sql->execute();
-		} catch (PDOExecption $e) {
-			$sql->rollback();
-			error_log(print_r("Error!: " . $e->getMessage() . "</br>", 1));
-		}
+				$sql->bindValue(":nome_documento", $arquivos['documento_arquivo']['name']);
+				$sql->bindValue(":id_company", $id_company);
+				if ($sql->execute()) {
+					controller::alert('success', 'documento adicionado com sucesso!!');
+
+					$id_obra = $this->db->lastInsertId();
+				} else {
+					controller::alert('error', 'Contate o administrador do sistema!!');
+				}
+			} catch (PDOExecption $e) {
+				$sql->rollback();
+				error_log(print_r("Error!: " . $e->getMessage() . "</br>", 1));
+			}
+
+			if ($id != '' && $id_obra) {
+				$this->addDocumentoObra($id, $id_obra);
+			}
+		
 	}
 
 	public function delete($id, $id_company)
@@ -132,6 +146,46 @@ class Documentos extends model
 			controller::alert('danger', 'documento deletado com sucesso!!');
 		} else {
 			controller::alert('error', 'Usuario desativado com sucesso!!');
+		}
+	}
+
+	public function getDocumentoObra($id_obra)
+	{
+
+		$sql = $this->db->prepare("
+			SELECT * FROM documentos_obra docbr
+			INNER JOIN documentos doc ON (doc.id = docbr.id_documento)
+			WHERE  id_obra = :id_obra
+		");
+
+		$sql->bindValue(':id_obra', $id_obra);
+
+		$sql->execute();
+
+		if ($sql->rowCount() > 0) {
+			$this->array = $sql->fetchAll();
+		}
+
+		return $this->array;
+	}
+
+	public function addDocumentoObra($id, $id_obra)
+	{
+
+		try {
+
+
+			$sql = $this->db->prepare("INSERT INTO documentos_obra (id_documento,id_obra)
+								VALUES (:id_obra, :id_documento)
+						");
+
+			$sql->bindValue(":id_documento", $id);
+			$sql->bindValue(":id_obra", $id_obra);
+			$sql->execute();
+
+		} catch (PDOExecption $e) {
+			$sql->rollback();
+			error_log(print_r("Error!: " . $e->getMessage() . "</br>", 1));
 		}
 	}
 }

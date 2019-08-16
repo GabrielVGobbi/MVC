@@ -103,6 +103,63 @@ class ClientesController extends controller
         }
     }
 
+    public function add_acesso($id_cliente){
+
+        if ($this->user->hasPermission('cliente_view') && $this->user->hasPermission('cliente_edit')) {
+
+            if (isset($_POST['login']) && isset($_POST['id'])) {
+
+                $result = $this->cliente->addAcessoCliente($_POST,$this->user->getCompany());
+                $this->addValicao($result);
+
+                header('Location:' . BASE_URL . 'clientes');
+                exit();
+            }
+        } else {
+
+            $this->loadViewError();
+        }
+
+    }
+
+    public function desativar($id_cliente){
+
+        if ($this->user->hasPermission('cliente_view') && $this->user->hasPermission('cliente_edit')) {
+
+            
+
+                $result = $this->cliente->desativar($id_cliente,$this->user->getCompany());
+                $this->addValicao($result);
+
+                header('Location:' . BASE_URL . 'clientes');
+                exit();
+           
+        } else {
+
+            $this->loadViewError();
+        }
+
+    }
+
+    public function ativar($id_cliente){
+
+        if ($this->user->hasPermission('cliente_view') && $this->user->hasPermission('cliente_edit')) {
+
+            
+
+                $result = $this->cliente->ativar($id_cliente,$this->user->getCompany());
+                $this->addValicao($result);
+
+                header('Location:' . BASE_URL . 'clientes');
+                exit();
+           
+        } else {
+
+            $this->loadViewError();
+        }
+
+    }
+
     public function delete($id)
     {
         if ($this->user->hasPermission('cliente_view') && $this->user->hasPermission('cliente_delete')) {

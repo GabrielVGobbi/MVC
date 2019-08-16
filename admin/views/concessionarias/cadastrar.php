@@ -1,4 +1,4 @@
-<div class="modal fade bd-example-modal-lg" id="modalCadastro" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="modalCadastro<?php echo ucfirst($viewData['pageController']) ?>" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form method="POST" enctype="multipart/form-data" action="<?php echo BASE_URL ?>concessionarias/add_action">
@@ -66,11 +66,25 @@
                                         </div>
                                         <div class="box-body" style="">
                                             <div class="" style="">
-                                                <div class="col-md-10">
+                                                <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label>Sub-Serviço</label>
                                                         <input type="text" class="form-control" name="etapas[nome_etapa][]" id="etapas[]" autocomplete="off">
 
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>Numero da Nota</label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="etapas[prazo_etapa][]" id="etapas[]" autocomplete="off">
+                                                        
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <label>Data de Abertura </label>
+                                                    <div class="input-group">
+                                                        <input type="text" class="form-control" name="etapas[prazo_etapa][]" id="etapas[]" autocomplete="off">
+                                                       
                                                     </div>
                                                 </div>
 
@@ -96,6 +110,8 @@
 
                                 </div>
                             </div>
+
+                            
                         </div>
 
                         <div class="modal-footer">

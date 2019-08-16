@@ -11,7 +11,9 @@ class homeController extends controller {
         $this->concessionaria = new Concessionaria();
         $this->servico = new Servicos();
         $this->cliente = new Cliente();
-        $this->obras = new Obras();
+        $this->obra = new Obras();
+        $this->documento = new Documentos();
+
 
 
 
@@ -37,14 +39,24 @@ class homeController extends controller {
 
     public function index() {
 
-        $this->dataInfo['count_obras'] = $this->obras->getCount($this->user->getCompany());
+        $this->dataInfo['count_obras'] = $this->obra->getCount($this->user->getCompany());
         $this->dataInfo['count_servico'] = $this->servico->getCount($this->user->getCompany());
         $this->dataInfo['count_cliente'] = $this->cliente->getCount($this->user->getCompany());
         $this->dataInfo['count_concessionaria'] = $this->concessionaria->getCount($this->user->getCompany());
 
 
+        if($this->user->usr_info() === 'cliente'){
+            $this->dataInfo = array('pageController' => 'Bem-Vindo');
 
-        $this->loadTemplate($this->dataInfo['pageController']."/index", $this->dataInfo);
+            $this->dataInfo['tableDados'] = $this->obra->getObraCliente($this->user->cliente(), '',$this->user->getCompany());
+
+            $this->loadTemplate('obrasClientes'."/index", $this->dataInfo);
+
+
+        }else {
+            $this->loadTemplate($this->dataInfo['pageController']."/index", $this->dataInfo);
+
+        }
     }
 
 }

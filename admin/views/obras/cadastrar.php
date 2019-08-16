@@ -10,7 +10,14 @@
                             </button>
                             <h2 class="modal-title fc-center" align="center" id="">Cadastro de Obra</h2>
                         </div>
-
+                        <?php if ($this->concessionaria->getCount($this->userInfo['user']->getCompany()) == 0) : ?>
+                        <div>
+                            <h3 class="text-center text-red">Para fazer o cadastro de obra, precisa ter uma concessionaria Cadastrada</h3>
+                            <div class="modal-footer">
+                                <a href="<?php echo BASE_URL;?>concessionarias/?modalcadastro=true" class="btn btn-primary btn-salvar">Cadastrar</a>
+                            </div>
+                        </div>
+                        <?php else : ?>
                         <div class="modal-body">
                             <div class="box box-default box-solid">
                                 <div class="row">
@@ -33,7 +40,7 @@
                                                     <select class="form-control select2 concessionaria_select" style="width: 100%;" name="concessionaria" id="id_concessionaria" aria-hidden="true" required>
                                                         <option value="">selecione</option>
                                                         <?php foreach ($viewData['concessionaria'] as $com) : ?>
-                                                            <option value="<?php echo $com['id']; ?>"><?php echo $com['razao_social'] ?></option>
+                                                        <option value="<?php echo $com['id']; ?>"><?php echo $com['razao_social'] ?></option>
                                                         <?php endforeach; ?>
                                                     </select>
                                                 </div>
@@ -78,7 +85,10 @@
                                                     </div>
                                                     <div class="box-body">
                                                         <ul class="todo-list">
-                                                            <div class="" id="id_sub_etapas"> </div>
+
+                                                            <div class="" id="id_sub_etapas">
+                                                            </div>
+
                                                         </ul>
                                                     </div>
                                                     <!--<div class="box-footer clearfix no-border">
@@ -107,6 +117,7 @@
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
                         </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </form>
@@ -118,6 +129,8 @@
 
 <script type="text/javascript">
     $(function() {
+
+
 
         $('#id_concessionaria').change(function() {
 
@@ -178,7 +191,12 @@
 
                     if (j.length != 0) {
                         for (var i = 0; i < j.length; i++) {
-                            options += '<input type="text" disabled class="form-control" value="' + j[i].nome_sub_categoria + '"></input>';
+
+                            options += '<li style="    border-radius: 2px;padding: 10px;background: #f4f4f4;margin-bottom: 2px;border-left: 2px solid #e6e7e8;color: #444;">';
+                            options += '<span class="text" name="etapa_obra[]" >' + j[i].nome_sub_categoria + '</span>';
+                            options += '<small style="font-size: 84%;margin-left: 25px;" class="label label-success"><i class="fa fa-clock-o"></i> Prazo de ' + j[i].etapa_nome + ' Dias</small>';
+                            options += '</li>';
+
                             $('.tarefas-tittle').html('Tarefas de ' + service[0].text)
 
                         }
@@ -286,7 +304,7 @@
                                 })
                                 $(".span-cliente").css("border-color", "#09a916");
                                 $('.searchresultscliente').hide();
-                                console.log(json);
+
                                 $('#id_cliente').val(json.id);
 
                             },

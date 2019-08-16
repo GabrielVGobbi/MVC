@@ -31,7 +31,7 @@ class Users extends model
 	{
 
 		$sql = $this->db->prepare("SELECT * FROM users WHERE login = :login AND password = :password AND usu_ativo = '1'");
-		$sql->bindValue(':login', $login);
+		$sql->bindValue(':login', lcfirst($login));
 		$sql->bindValue(':password', md5($password));
 		$sql->execute();
 
@@ -103,6 +103,24 @@ class Users extends model
 		if (isset($this->userInfo['id'])) {
 
 			return $this->userInfo['id'];
+		} else
+			return 0;
+	}
+
+	public function usr_info()
+	{
+		if (isset($this->userInfo['usr_info'])) {
+
+			return $this->userInfo['usr_info'];
+		} else
+			return 0;
+	}
+
+	public function cliente()
+	{
+		if (isset($this->userInfo['id_cliente'])) {
+
+			return $this->userInfo['id_cliente'];
 		} else
 			return 0;
 	}
@@ -229,6 +247,43 @@ class Users extends model
 			$sql->bindValue(":login", '%' . $filtro['login'] . '%');
 		}
 	}
+
+	public function add($Parametros,$id_company)
+	{
+		$email = controller::ReturnFormatLimpo($Parametros['email']);
+		$login = ($Parametros['login']);
+		$pass  = ($Parametros['password']);
+
+		$sql = $this->db->prepare("INSERT INTO users SET 
+            			email = :email, 
+            			login = :login,
+            			id_company = :id_company,
+						password = :password			
+        			");
+
+		$sql->bindValue(":email", $email);
+		$sql->bindValue(":login", $login);
+		$sql->bindValue(":password", md5($pass));
+		$sql->bindValue(":id_company", $id_company);
+
+		$sql->execute();
+		$id = $this->db->lastInsertId();
+
+		if($id != ''){
+			$sql = $this->db->prepare("INSERT INTO permission_groups SET 
+            			id_usuario = :id, 
+						id_company = :id_company,
+						params = :params				
+        			");
+
+		$sql->bindValue(":id", $id);
+		$sql->bindValue(":id_company", $id_company);
+		$sql->bindValue(":params", '1');
+
+		$sql->execute();
+		}
+	}
+
 
 	public function edit($id_company, $Parametros)
 	{
@@ -399,14 +454,12 @@ class Users extends model
 	{
 		$array = array();
 		$sql = $this->db->prepare("SELECT * FROM notificacoes WHERE id_user = :id_user AND id_company = :id_company");
-		$sql->bindValue(':id_user',$id_user);
-		$sql->bindValue(':id_company',$id_company);
+		$sql->bindValue(':id_user', $id_user);
+		$sql->bindValue(':id_company', $id_company);
 		$sql->execute();
 
 		if ($sql->rowCount() > 0) {
 			$array = $sql->fetchAll();
-				
-			
 		}
 		return $array;
 	}

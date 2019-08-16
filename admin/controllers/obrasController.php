@@ -9,6 +9,8 @@ class obrasController extends controller
 
         $this->user = new Users();
         $this->obra = new Obras();
+        $this->documento = new Documentos();
+
         $this->cliente = new Cliente();
         $this->concessionaria = new Concessionaria();
         $this->servico = new Servicos();
@@ -39,11 +41,11 @@ class obrasController extends controller
             }
 
             $this->dataInfo['p'] = 1;
-			if (isset($_GET['p']) && !empty($_GET['p'])) {
-				$this->dataInfo['p'] = intval($_GET['p']);
-				if ($this->dataInfo['p'] == 0) {
-					$this->dataInfo['p'] = 1;
-				}
+            if (isset($_GET['p']) && !empty($_GET['p'])) {
+                $this->dataInfo['p'] = intval($_GET['p']);
+                if ($this->dataInfo['p'] == 0) {
+                    $this->dataInfo['p'] = 1;
+                }
             }
 
             $this->dataInfo['tableDados'] = $this->obra->getAll($this->filtro, $this->user->getCompany());
@@ -52,10 +54,9 @@ class obrasController extends controller
 
             $this->dataInfo['clientes'] = $this->cliente->getAll('', $this->user->getCompany());
             $this->dataInfo['concessionaria'] = $this->concessionaria->getAll('', $this->user->getCompany());
-            $this->dataInfo['servico'] = $this->servico->getAll('', $this->user->getCompany());
+            $this->dataInfo['servico'] = $this->servico->getAll('0', '', $this->user->getCompany());
 
             $this->loadTemplate($this->dataInfo['pageController'] . "/index", $this->dataInfo);
-            
         } else {
             $this->loadViewError();
         }
@@ -98,15 +99,14 @@ class obrasController extends controller
 
             $this->dataInfo['tableInfo'] = $this->obra->getInfo($id, $this->user->getCompany());
 
-            if (isset($_POST['sev_nome']) && isset($_POST['id'])) {
-
-                $result = $this->painel->edit($_POST, $this->dataInfo['nome_tabela'], $this->user->getCompany());
-                $this->addValicao($result);
+            if (isset($id) && $id != '') {
+                if (isset($_FILES)) {
+                    $this->documento->add($_FILES, $this->user->getCompany() ,$id);
+                }
 
                 header('Location:' . BASE_URL . $this->dataInfo['pageController']);
                 exit();
             }
-            $this->loadTemplate($this->dataInfo['pageController'] . "/editar", $this->dataInfo);
         } else {
 
             $this->loadViewError();
@@ -117,7 +117,7 @@ class obrasController extends controller
     {
 
         if ($this->user->hasPermission('obra_view') && $this->user->hasPermission('obra_delete')) {
-            
+
             $result = $this->obra->delete($id, $this->user->getCompany());
 
             header("Location: " . BASE_URL . $this->dataInfo['pageController']);
@@ -129,7 +129,6 @@ class obrasController extends controller
                 $this->dataInfo['error'] = 'true';
                 $this->dataInfo['mensagem'] = "Não foi possivel excluir!";
             }
-
         } else {
             $this->loadViewError();
         }
@@ -151,6 +150,4 @@ class obrasController extends controller
 
         return $_SESSION['form'];
     }
-
-    
 }

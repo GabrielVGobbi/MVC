@@ -24,7 +24,7 @@ class ajaxController extends controller
         $u->setLoggedUser();
 
 
-        $servico = $a->getALL('', $u->getCompany());
+        $servico = $a->getALL('','', $u->getCompany());
 
         foreach ($servico as $citem) {
             $data[] = array(
@@ -54,7 +54,8 @@ class ajaxController extends controller
         foreach ($servico as $citem) {
             $data[] = array(
                 'id' => $citem['id'],
-                'nome_sub_categoria'   => $citem['etp_nome']
+                'nome_sub_categoria'   => $citem['etp_nome'],
+                'etapa_nome' => $citem['prazo_etapa']
             );
         }
 
@@ -142,4 +143,27 @@ class ajaxController extends controller
         echo json_encode($array);
         exit;
     }
+
+    public function updateEtapa()
+    {
+        $data = array();
+        $u = new Users();
+        $u->setLoggedUser();
+        $a = new Servicos();
+        $Parametros = array();
+
+  
+      error_log(print_r($_POST,1));
+    
+        if (isset($_POST['id_etapa']) && !empty($_POST['id_etapa'])) {
+
+
+                $data['id'] = $a->updateEtapa($_POST);
+
+            
+        }
+
+        
+    }
+
 }

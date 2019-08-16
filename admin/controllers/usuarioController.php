@@ -71,7 +71,7 @@ class usuarioController extends controller
 
 		if (isset($_POST['login']) && $_POST['login'] != '') {
 
-			$result = $this->painel->insert($_POST, $this->dataInfo['tabela'], $this->user->getCompany());
+			$result = $this->user->add($_POST,$this->user->getCompany());
 			$this->addValicao($result);
 
 

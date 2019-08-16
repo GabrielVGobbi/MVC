@@ -48,7 +48,7 @@ class ConcessionariasController extends controller
             $this->dataInfo['getCount']   = $this->concessionaria->getCount($this->user->getCompany());
             $this->dataInfo['p_count']    = ceil($this->dataInfo['getCount'] / 10);
 
-            $this->dataInfo['servico']    = $this->servico->getAll('', $this->user->getCompany());
+            $this->dataInfo['servico']    = $this->servico->getAll('0','', $this->user->getCompany());
             $this->dataInfo['documento']  = $this->documento->getAll('', $this->user->getCompany());
 
 
@@ -96,9 +96,7 @@ class ConcessionariasController extends controller
 
             $this->dataInfo['tableInfo']                    = $this->concessionaria->getInfo($id, $this->user->getCompany());
             $this->dataInfo['servicos_concessionaria']      = $this->concessionaria->getServicoByConc($id, $this->user->getCompany());
-            $this->dataInfo['documentos_concessionaria']    = $this->concessionaria->getDocumentoByConc($id, $this->user->getCompany());
-
-            $this->dataInfo['servico']    = $this->servico->getAll('', $this->user->getCompany());
+            $this->dataInfo['servico']    = $this->servico->getAll('0','', $this->user->getCompany());
 
 
 
