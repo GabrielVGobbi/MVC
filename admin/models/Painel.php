@@ -5,6 +5,7 @@ class Painel extends model
     public function __construct()
     {
         parent::__construct();
+
         $this->array = array();
         $this->retorno = array();
     }
@@ -15,7 +16,6 @@ class Painel extends model
         $nome_tabela = $tabela;
         $parametros[] = $id_company;
        
-
         foreach ($arr as $key => $value) {
             $nome_coluna[] = '`' . $key . '`';
         }
@@ -86,6 +86,7 @@ class Painel extends model
                 $sql->execute($parametros);
             }
         }
+        
         return $certo;
     }
 }

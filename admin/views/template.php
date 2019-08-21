@@ -44,26 +44,6 @@
               <li class="active"><a href="<?php echo BASE_URL; ?>usuario">Usuarios <span class="sr-only">(current)</span></a></li>
               <?php endif; ?>
 
-              <?php if ($this->userInfo['user']->hasPermission('cliente_view')) : ?>
-              <li class="active"><a href="<?php echo BASE_URL; ?>clientes">Clientes <span class="sr-only">(current)</span></a></li>
-              <?php endif; ?>
-
-              <?php if ($this->userInfo['user']->hasPermission('servico_view')) : ?>
-              <li class="active"><a href="<?php echo BASE_URL; ?>obras">Obras <span class="sr-only">(current)</span></a></li>
-              <?php endif; ?>
-
-              <?php if ($this->userInfo['user']->hasPermission('concessionaria_view')) : ?>
-              <li class="active"><a href="<?php echo BASE_URL; ?>concessionarias">Concessionarias <span class="sr-only">(current)</span></a></li>
-              <?php endif; ?>
-
-              <?php if ($this->userInfo['user']->hasPermission('servico_view')) : ?>
-              <li class="active"><a href="<?php echo BASE_URL; ?>servicos">Serviços <span class="sr-only">(current)</span></a></li>
-              <?php endif; ?>
-
-              <?php if ($this->userInfo['user']->hasPermission('documento_view')) : ?>
-              <li class="active"><a href="<?php echo BASE_URL; ?>documentos">Documentos <span class="sr-only">(current)</span></a></li>
-              <?php endif; ?>
-
 
 
             </ul>

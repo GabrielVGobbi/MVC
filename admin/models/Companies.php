@@ -18,17 +18,11 @@ Class Companies extends model {
 	}
 
 	public function getName(){
+		//Retornar o nome da Empresa
 		if (isset($this->companyInfo['name'])) {
 			return $this->companyInfo['name'];
-
-			# code...
 		}else {
 			return '';
 		}
 	}
-
-
-
-
-
 }

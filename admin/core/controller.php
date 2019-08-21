@@ -1,5 +1,5 @@
 <?php
-class controller
+class Controller
 {
 
 	protected $db;
@@ -7,8 +7,6 @@ class controller
 
 	public function __construct()
 	{
-
-
 		$u = new Users;
 		$u->setLoggedUser();
 

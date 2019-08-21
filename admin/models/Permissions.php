@@ -5,6 +5,14 @@ class Permissions extends model
 	private $group;
 	private $permissions;
 
+	public function __construct()
+    {
+        parent::__construct();
+
+        $this->array = array();
+        $this->retorno = array();
+    }
+
 	public function setGroup($id, $id_company)
 	{
 		$this->group = $id;
@@ -48,43 +56,42 @@ class Permissions extends model
 
 	public function getlist($id_company)
 	{
-
-		$array = array();
+		
 		$sql = $this->db->prepare("SELECT *, upper(name) as name FROM permission_params WHERE id_company = 1");
 
 		$sql->bindValue(":id_company", $id_company);
 		$sql->execute();
 
 		if ($sql->rowCount() > 0) {
-			$array = $sql->fetchAll();
+
+			$this->array = $sql->fetchAll();
 		} else {
 
 			$error = "não localizado";
 		}
 
-		return $array;
+		return $this->array;
 	}
 
 	public function getGroupList($id_company)
 	{
 
-		$array = array();
 		$sql = $this->db->prepare("SELECT * FROM permission_groups WHERE id_company = :id_company");
 
 		$sql->bindValue(":id_company", $id_company);
 		$sql->execute();
 
 		if ($sql->rowCount() > 0) {
-			$array = $sql->fetchAll();
+			$this->array = $sql->fetchAll();
 		} else {
 
 			$error = "não localizado";
 		}
 
-		return $array;
+		return $this->array;
 	}
 
-	public function add($name, $id_company)
+	public function insert($name, $id_company)
 	{
 
 		$sql = $this->db->prepare("INSERT INTO permission_params SET name = :name, id_company = :id_company");
@@ -106,11 +113,8 @@ class Permissions extends model
 		$sql->execute();
 	}
 
-
-
 	public function delete($id)
 	{
-
 		$sql = $this->db->prepare("DELETE FROM permission_params WHERE id = :id");
 		$sql->bindValue(":id", $id);
 		$sql->execute();
@@ -132,21 +136,21 @@ class Permissions extends model
 	public function getGroup($id, $id_company)
 	{
 
-		$array = array();
+		
 		$sql = $this->db->prepare("SELECT * FROM permission_groups WHERE id_usuario = :id AND id_company = :id_company");
 		$sql->bindValue(":id", $id);
 		$sql->bindValue(":id_company", $id_company);
 		$sql->execute();
 
 		if ($sql->rowCount() > 0) {
-			$array = $sql->fetch();
-			$array['params'] = explode(',', $array['params']);
+			$this->array = $sql->fetch();
+			$this->array['params'] = explode(',', $this->array['params']);
 		} else {
 
 			$error = "não localizado";
 		}
 
-		return $array;
+		return $this->array;
 	}
 
 	public function editGroup($name,  $plist, $id, $id_company)
@@ -165,7 +169,7 @@ class Permissions extends model
 	public function getPermissionsName($id, $id_company)
 	{
 		$this->group = $id;
-		$array[] = array();
+		$this->array[] = array();
 
 
 		$sql = $this->db->prepare("SELECT * FROM permission_groups WHERE id_usuario = :id AND id_company = :id_company");
@@ -188,11 +192,11 @@ class Permissions extends model
 			$sql->execute();
 
 			if ($sql->rowCount() > 0) {
-				$array = $sql->fetchALL();
+				$this->array = $sql->fetchALL();
 			}
 
 
-			return $array;
+			return $this->array;
 		}
 	}
 
@@ -203,10 +207,10 @@ class Permissions extends model
 		$sql->execute();
 
 		if ($sql->rowCount() > 0) {
-			$array = $sql->fetchALL();
+			$this->array = $sql->fetchALL();
 		}
 
 
-		return $array;
+		return $this->array;
 	}
 }

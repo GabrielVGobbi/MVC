@@ -4,7 +4,7 @@ require 'environment.php';
 global $config;
 $config = array();
 if(ENVIRONMENT == 'development') {
-	define("BASE_URL", "http://www2.cena.com.br/admin/");
+	define("BASE_URL", "http://www2.mvc.com.br/admin/");
 	$config['dbname'] = 'cena';
 	$config['host'] = 'localhost';
 	$config['dbuser'] = 'root';
